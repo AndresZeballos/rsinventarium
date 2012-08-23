@@ -314,3 +314,17 @@ ALTER TABLE `rossisport`.`articulos`
 , ADD INDEX `marca_idx` (`marca` ASC) ;
 
 ALTER TABLE `rossisport`.`articulos` ADD COLUMN `stock` INT NOT NULL  AFTER `color` ;
+
+ALTER TABLE `rossisport`.`articulos` 
+  ADD CONSTRAINT `talle`
+  FOREIGN KEY (`talle` )
+  REFERENCES `rossisport`.`talles` (`talle` )
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION, 
+  ADD CONSTRAINT `color`
+  FOREIGN KEY (`color` )
+  REFERENCES `rossisport`.`colores` (`Color` )
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION
+, ADD INDEX `talle_idx` (`talle` ASC) 
+, ADD INDEX `color_idx` (`color` ASC) ;
