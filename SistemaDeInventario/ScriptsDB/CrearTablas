@@ -312,3 +312,5 @@ ALTER TABLE `rossisport`.`articulos`
   ON UPDATE NO ACTION
 , ADD INDEX `categoria_idx` (`categoria` ASC) 
 , ADD INDEX `marca_idx` (`marca` ASC) ;
+
+ALTER TABLE `rossisport`.`articulos` ADD COLUMN `stock` INT NOT NULL  AFTER `color` ;
