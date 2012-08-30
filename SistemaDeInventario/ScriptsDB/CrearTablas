@@ -328,3 +328,89 @@ ALTER TABLE `rossisport`.`articulos`
   ON UPDATE NO ACTION
 , ADD INDEX `talle_idx` (`talle` ASC) 
 , ADD INDEX `color_idx` (`color` ASC) ;
+
+ALTER TABLE `rossisport`.`articulos` DROP FOREIGN KEY `talle` , DROP FOREIGN KEY `color` ;
+ALTER TABLE `rossisport`.`articulos` DROP COLUMN `stock` , DROP COLUMN `color` , DROP COLUMN `talle` 
+, DROP PRIMARY KEY 
+, ADD PRIMARY KEY (`codigo`) 
+, DROP INDEX `color_idx` 
+, DROP INDEX `talle_idx` ;
+
+ALTER TABLE `rossisport`.`articulos` RENAME TO  `rossisport`.`descripciones` ;
+
+INSERT INTO `rossisport`.`estaciones` (`Estacion`) VALUES ('Invierno');
+INSERT INTO `rossisport`.`estaciones` (`Estacion`) VALUES ('Verano');
+
+INSERT INTO `rossisport`.`lisafantasia` (`Tipo`) VALUES ('Fantasia');
+INSERT INTO `rossisport`.`lisafantasia` (`Tipo`) VALUES ('Lisa');
+
+INSERT INTO `rossisport`.`lisorayado` (`Tipo`) VALUES ('Liso');
+INSERT INTO `rossisport`.`lisorayado` (`Tipo`) VALUES ('Rayado');
+
+INSERT INTO `rossisport`.`mangas` (`Manga`) VALUES ('Corta');
+INSERT INTO `rossisport`.`mangas` (`Manga`) VALUES ('Larga');
+
+INSERT INTO `rossisport`.`pinzas` (`Pinza`) VALUES ('0');
+INSERT INTO `rossisport`.`pinzas` (`Pinza`) VALUES ('1');
+INSERT INTO `rossisport`.`pinzas` (`Pinza`) VALUES ('2');
+
+INSERT INTO `rossisport`.`talles` (`talle`) VALUES ('S');
+INSERT INTO `rossisport`.`talles` (`talle`) VALUES ('M');
+INSERT INTO `rossisport`.`talles` (`talle`) VALUES ('L');
+INSERT INTO `rossisport`.`talles` (`talle`) VALUES ('XL');
+
+INSERT INTO `rossisport`.`tipocampera` (`Tipo`) VALUES ('Hasta cintura');
+INSERT INTO `rossisport`.`tipocampera` (`Tipo`) VALUES ('Hasta muslo');
+
+INSERT INTO `rossisport`.`tipocinturon` (`Tipo`) VALUES ('Reversible');
+INSERT INTO `rossisport`.`tipocinturon` (`Tipo`) VALUES ('Clasico');
+INSERT INTO `rossisport`.`tipocinturon` (`Tipo`) VALUES ('Cuerda');
+INSERT INTO `rossisport`.`tipocinturon` (`Tipo`) VALUES ('Sport');
+
+INSERT INTO `rossisport`.`tipopack` (`Tipo`) VALUES ('Unidad');
+INSERT INTO `rossisport`.`tipopack` (`Tipo`) VALUES ('Por 3');
+
+INSERT INTO `rossisport`.`tipopantalon` (`Tipo`) VALUES ('Vestir');
+INSERT INTO `rossisport`.`tipopantalon` (`Tipo`) VALUES ('Sport');
+
+INSERT INTO `rossisport`.`tiporemera` (`Tipo`) VALUES ('Clasica');
+INSERT INTO `rossisport`.`tiporemera` (`Tipo`) VALUES ('Polo');
+INSERT INTO `rossisport`.`tiporemera` (`Tipo`) VALUES ('T-Shirt');
+
+INSERT INTO `rossisport`.`tiposuela` (`Tipo`) VALUES ('Suela');
+INSERT INTO `rossisport`.`tiposuela` (`Tipo`) VALUES ('Suela con ovalo');
+INSERT INTO `rossisport`.`tiposuela` (`Tipo`) VALUES ('Goma');
+
+INSERT INTO `rossisport`.`tipotirador` (`Tipo`) VALUES ('Para botones');
+INSERT INTO `rossisport`.`tipotirador` (`Tipo`) VALUES ('Pinzas');
+
+INSERT INTO `rossisport`.`vbase` (`Tipo`) VALUES ('Escote V');
+INSERT INTO `rossisport`.`vbase` (`Tipo`) VALUES ('A la base');
+
+INSERT INTO `rossisport`.`vbotones` (`Tipo`) VALUES ('Escote V');
+INSERT INTO `rossisport`.`vbotones` (`Tipo`) VALUES ('Con botones');
+
+CREATE  TABLE `rossisport`.`articulos` (
+  `codigo` VARCHAR(45) NOT NULL ,
+  `talle` VARCHAR(45) NOT NULL ,
+  `color` VARCHAR(45) NOT NULL ,
+  `stock` INT NULL ,
+  PRIMARY KEY (`codigo`, `talle`, `color`) ,
+  INDEX `codigo_idx` (`codigo` ASC) ,
+  INDEX `talle_idx` (`talle` ASC) ,
+  INDEX `color_idx` (`color` ASC) ,
+  CONSTRAINT `a_codigo`
+    FOREIGN KEY (`codigo` )
+    REFERENCES `rossisport`.`descripciones` (`codigo` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `a_talle`
+    FOREIGN KEY (`talle` )
+    REFERENCES `rossisport`.`talles` (`talle` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `a_color`
+    FOREIGN KEY (`color` )
+    REFERENCES `rossisport`.`colores` (`Color` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
