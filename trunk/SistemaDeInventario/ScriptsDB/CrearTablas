@@ -414,3 +414,17 @@ CREATE  TABLE `rossisport`.`articulos` (
     REFERENCES `rossisport`.`colores` (`Color` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
+
+CREATE  TABLE `rossisport`.`locales` (
+  `local` VARCHAR(45) NOT NULL ,
+  PRIMARY KEY (`local`) );
+
+ALTER TABLE `rossisport`.`articulos` CHANGE COLUMN `stock` `stock` INT(11) NULL DEFAULT 0  , ADD COLUMN `local` VARCHAR(45) NOT NULL  AFTER `color` , 
+  ADD CONSTRAINT `a_local`
+  FOREIGN KEY (`local` )
+  REFERENCES `rossisport`.`locales` (`local` )
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION
+, DROP PRIMARY KEY 
+, ADD PRIMARY KEY (`codigo`, `talle`, `color`, `local`) 
+, ADD INDEX `a_local_idx` (`local` ASC) ;
