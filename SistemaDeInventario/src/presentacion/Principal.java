@@ -25,9 +25,9 @@ public class Principal extends javax.swing.JFrame {
         Statement stmt = c.getStatement();
         try {
             //stmt = c.getStatement2();
-            ResultSet rs = stmt.executeQuery("SELECT * from pinzas");
+            ResultSet rs = stmt.executeQuery("SELECT * from descripciones");
             while (rs.next()) {
-                String str = rs.getString("pinza");
+                String str = rs.getString("codigo") + ";" + rs.getString("marca") + ";" + rs.getString("categoria") + ";" + rs.getString("slim");
                 jComboBox1.addItem(str);
             }
         } catch (SQLException e) {
