@@ -428,3 +428,9 @@ ALTER TABLE `rossisport`.`articulos` CHANGE COLUMN `stock` `stock` INT(11) NULL 
 , DROP PRIMARY KEY 
 , ADD PRIMARY KEY (`codigo`, `talle`, `color`, `local`) 
 , ADD INDEX `a_local_idx` (`local` ASC) ;
+
+INSERT INTO `rossisport`.`marcas` (`marca`) VALUES ('Andres');
+
+INSERT INTO `rossisport`.`descripciones` (`codigo`, `marca`, `categoria`, `slim`) VALUES ('Pepe', 'Andres', 'Pantalon', true);
+
+INSERT INTO `rossisport`.`descripciones` (`codigo`, `marca`, `categoria`, `slim`) VALUES ('juan', 'Andres', 'Pantalon', false);
