@@ -24,7 +24,7 @@ public class Principal extends javax.swing.JFrame {
         ConectionH c = new ConectionH();
         Statement stmt = c.getStatement();
         try {
-            stmt = c.getStatement2();
+            //stmt = c.getStatement2();
             ResultSet rs = stmt.executeQuery("SELECT * from pinzas");
             while (rs.next()) {
                 String str = rs.getString("pinza");
