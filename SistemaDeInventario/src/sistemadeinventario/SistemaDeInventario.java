@@ -4,7 +4,6 @@
  */
 package sistemadeinventario;
 
-import java.sql.*;
 import presentacion.Principal;
 
 /**
