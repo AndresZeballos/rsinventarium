@@ -20,17 +20,11 @@ public class ControladorCaracteristicas {
 
     private Hashtable<String, List> caracteristicas;
     
-    private static ControladorCaracteristicas instancia = new ControladorCaracteristicas();  
-
-    private ControladorCaracteristicas() {
+    public ControladorCaracteristicas() {
         this.caracteristicas = new Hashtable<String, List>();
         initCaracteristicas();
     }
     
-    public static ControladorCaracteristicas getInstance() {  
-        return instancia;  
-    }  
-
     public void initCaracteristicas() {
         String[] tablas = {
             // Caracteristicas propias de la descripción de los articulos
