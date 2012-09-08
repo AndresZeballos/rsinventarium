@@ -7,6 +7,8 @@ package logica;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import sistemadeinventario.ConectionH;
 
 /**
@@ -17,11 +19,9 @@ public class ControladorArticulos {
 
     public static final int OK = 0;
     public static final int CODIGO_INCORRECTO = 1;
-    
-    private ControladorCaracteristicas caracteristicas;
-    
+    public static final int NO_NUMERICO = 2;
+
     public ControladorArticulos() {
-        caracteristicas = ControladorCaracteristicas.getInstance();
     }
 
     /*
@@ -108,9 +108,19 @@ public class ControladorArticulos {
         }
         return resultado;
     }
-    
-    public int ingresar(String codigo, String talle, String color, String local, String cantidad) {
-        
-        return OK;
+
+    public boolean actualizarStock(String codigo, String talle, String color, String local, int cantidad) {
+        // update articulos SET stock = stock + 100 where codigo = "pepe" and talle = "S";
+        ConectionH c = new ConectionH();
+        Statement stmt = c.getStatement();
+        String consulta = "UPDATE articulos SET stock = stock + " + cantidad + " WHERE codigo = \"" + codigo + 
+                "\" AND talle = \"" + talle + "\" AND color = \"" + color + "\" AND local = \"" + local + "\"";
+        try {
+            stmt.executeUpdate(consulta);
+        } catch (SQLException ex) {
+            Logger.getLogger(ControladorArticulos.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+        return true;
     }
 }
