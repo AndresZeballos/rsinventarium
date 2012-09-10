@@ -28,6 +28,7 @@ public class ControladorCaracteristicas {
     public void initCaracteristicas() {
         String[] tablas = {
             // Caracteristicas propias de la descripción de los articulos
+            /*
             "pinzas",
             "telas",
             "estaciones",
@@ -46,13 +47,15 @@ public class ControladorCaracteristicas {
             "vbotones",
             "vbase",
             "cortolargo",
+            */
             //
             "colores",
             "talles",
             "locales",
             "marcas",
             "categorias",
-            "descripciones"
+            "descripciones",
+            "componentes"
         };
         ConectionH c = new ConectionH();
         Statement stmt = c.getStatement();
