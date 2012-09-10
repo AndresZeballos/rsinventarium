@@ -5,7 +5,9 @@
 package logica;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -129,18 +131,16 @@ public class ControladorArticulos {
         return true;
     }
 
-    public void cargar(String archivo, boolean cargar) {
+    public boolean cargar(String archivo, boolean cargar) {
         ArrayList<String[]> csv = levantarCSV(archivo);
         if (!validarCSV(csv)) {
-            return;
+            return false;
         }
-
         ConectionH c = new ConectionH();
         Statement stmt = c.getStatement();
         String select, update;
-        String[] linea;
+        String[] linea = new String[6];
         ResultSet rs;
-
         for (int i = 0; i < csv.size(); i++) {
             try {
                 linea = csv.get(i);
@@ -173,9 +173,11 @@ public class ControladorArticulos {
                 linea[5] = "OK";
             } catch (SQLException ex) {
                 Logger.getLogger(ControladorArticulos.class.getName()).log(Level.SEVERE, null, ex);
+                linea[5] = "NO";
             }
         }
         guardarCSV(archivo, csv);
+        return true;
     }
 
     private ArrayList<String[]> levantarCSV(String archivo) {
@@ -190,7 +192,7 @@ public class ControladorArticulos {
             while ((strLine = br.readLine()) != null) {
                 //break comma separated line using ","
                 st = new StringTokenizer(strLine, ",");
-                resultado.add(new String[st.countTokens() + 1]);
+                resultado.add(new String[6]);
                 while (st.hasMoreTokens()) {
                     //display csv values
                     resultado.get(lineNumber)[tokenNumber] = st.nextToken();
@@ -217,33 +219,58 @@ public class ControladorArticulos {
         }
         return resultado;
     }
-    
+
     private void guardarCSV(String archivo, ArrayList<String[]> resultado) {
-        /*
-        ArrayList<String[]> resultado = new ArrayList<String[]>();
+        FileWriter fichero = null;
+        BufferedWriter bw;
+        String str;
+        String[] linea;
         try {
-            //create BufferedReader to read csv file
-            BufferedReader br = new BufferedReader(new FileReader(archivo));
-            String strLine = "";
-            StringTokenizer st = null;
-            int lineNumber = 0, tokenNumber = 0;
-            //read comma separated file line by line
-            while ((strLine = br.readLine()) != null) {
-                //break comma separated line using ","
-                st = new StringTokenizer(strLine, ",");
-                resultado.add(new String[st.countTokens() + 1]);
-                while (st.hasMoreTokens()) {
-                    //display csv values
-                    resultado.get(lineNumber)[tokenNumber] = st.nextToken();
-                    tokenNumber++;
+            fichero = new FileWriter(archivo);
+            bw = new BufferedWriter(fichero);
+            for (int i = 0; i < resultado.size(); i++) {
+                str = "";
+                linea = resultado.get(i);
+                for (int j = 0; j < linea.length; j++) {
+                    str += linea[j] + ",";
                 }
-                //reset token number
-                tokenNumber = 0;
-                // Nueva linea
-                lineNumber++;
+                bw.write(str + "\n");
             }
+            bw.close();
         } catch (Exception e) {
-            System.out.println("Exception while reading csv file: " + e);
-        }*/
+        } finally {
+            try {
+                if (fichero != null) {
+                    fichero.close();
+                }
+            } catch (Exception e) {
+            }
+        }
+        /*
+         ArrayList<String[]> resultado = new ArrayList<String[]>();
+         try {
+         //create BufferedReader to read csv file
+         BufferedReader br = new BufferedReader(new FileReader(archivo));
+         String strLine = "";
+         StringTokenizer st = null;
+         int lineNumber = 0, tokenNumber = 0;
+         //read comma separated file line by line
+         while ((strLine = br.readLine()) != null) {
+         //break comma separated line using ","
+         st = new StringTokenizer(strLine, ",");
+         resultado.add(new String[st.countTokens() + 1]);
+         while (st.hasMoreTokens()) {
+         //display csv values
+         resultado.get(lineNumber)[tokenNumber] = st.nextToken();
+         tokenNumber++;
+         }
+         //reset token number
+         tokenNumber = 0;
+         // Nueva linea
+         lineNumber++;
+         }
+         } catch (Exception e) {
+         System.out.println("Exception while reading csv file: " + e);
+         }*/
     }
 }

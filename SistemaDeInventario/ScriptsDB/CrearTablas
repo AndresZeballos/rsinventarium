@@ -447,3 +447,7 @@ INSERT INTO `rossisport`.`articulos` (`codigo`, `talle`, `color`, `local`, `stoc
 INSERT INTO `rossisport`.`articulos` (`codigo`, `talle`, `color`, `local`, `stock`) VALUES ('Pepe', 'S', 'Negro', 'Deposito 2', '5');
 INSERT INTO `rossisport`.`articulos` (`codigo`, `talle`, `color`, `local`, `stock`) VALUES ('Pepe', 'M', 'Negro', 'Deposito 2', '2');
 
+ALTER TABLE `rossisport`.`descripciones` ADD COLUMN `descripcion` VARCHAR(500) NULL  AFTER `categoria` ;
+
+INSERT INTO `rossisport`.`componentes` (`Componente`) VALUES ('Algodón');
+INSERT INTO `rossisport`.`componentes` (`Componente`) VALUES ('Poliester');
