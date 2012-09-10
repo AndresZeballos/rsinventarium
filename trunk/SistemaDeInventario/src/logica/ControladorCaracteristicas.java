@@ -77,6 +77,7 @@ public class ControladorCaracteristicas {
     }
     
     public boolean existeElementoCaracteristica(String elemento, String caracteristica){
-        return this.caracteristicas.get(caracteristica).contains(elemento);
+        List a = this.caracteristicas.get(caracteristica);
+        return a.contains(elemento);
     }
 }
