@@ -21,11 +21,11 @@ public class ControladorCaracteristicas {
     private Hashtable<String, List> caracteristicas;
     
     public ControladorCaracteristicas() {
-        this.caracteristicas = new Hashtable<String, List>();
         initCaracteristicas();
     }
     
     public void initCaracteristicas() {
+        this.caracteristicas = new Hashtable<String, List>();
         String[] tablas = {
             // Caracteristicas propias de la descripción de los articulos
             /*
@@ -83,4 +83,5 @@ public class ControladorCaracteristicas {
         List a = this.caracteristicas.get(caracteristica);
         return a.contains(elemento);
     }
+    
 }
