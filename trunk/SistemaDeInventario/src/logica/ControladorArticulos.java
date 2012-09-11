@@ -120,10 +120,21 @@ public class ControladorArticulos {
     public boolean actualizarStock(String codigo, String talle, String color, String local, int cantidad) {
         ConectionH c = new ConectionH();
         Statement stmt = c.getStatement();
-        String consulta = "UPDATE articulos SET stock = stock + " + cantidad + " WHERE codigo = \"" + codigo
-                + "\" AND talle = \"" + talle + "\" AND color = \"" + color + "\" AND local = \"" + local + "\"";
+        ResultSet rs;
         try {
-            stmt.executeUpdate(consulta);
+            rs = stmt.executeQuery("SELECT stock FROM articulos "
+                    + " WHERE codigo = '" + codigo + 
+                    "' AND talle = '" + talle + 
+                    "' AND color = '" + color + 
+                    "' AND local = '" + local + "'");
+            rs.last();
+            if (rs.getRow() == 0) {
+                stmt.executeUpdate("INSERT INTO articulos (codigo, talle, color, local, stock) VALUES "
+                        + "('" + codigo + "', '" + talle + "', '" + color + "', '" + local + "', '" + cantidad + "')");
+            } else {
+                stmt.executeUpdate("UPDATE articulos SET stock = stock + " + cantidad + " WHERE codigo = \"" + codigo
+                + "\" AND talle = \"" + talle + "\" AND color = \"" + color + "\" AND local = \"" + local + "\"");
+            }
         } catch (SQLException ex) {
             Logger.getLogger(ControladorArticulos.class.getName()).log(Level.SEVERE, null, ex);
             return false;
@@ -145,29 +156,29 @@ public class ControladorArticulos {
             try {
                 linea = csv.get(i);
                 select = "SELECT * FROM articulos "
-                        + " WHERE codigo = \"" + linea[0]
-                        + "\" AND talle = \"" + linea[1]
-                        + "\" AND color = \"" + linea[2]
-                        + "\" AND local = \"" + linea[3] + "\"";
+                        + " WHERE codigo = '" + linea[0]
+                        + "' AND talle = '" + linea[1]
+                        + "' AND color = '" + linea[2]
+                        + "' AND local = '" + linea[3] + "'";
                 rs = stmt.executeQuery(select);
                 rs.last();
                 if (rs.getRow() == 0) {
                     stmt.executeUpdate("INSERT INTO articulos "
-                            + "(`codigo`, `talle`, `color`, `local`, `stock`) VALUES "
+                            + "(codigo, talle, color, local, stock) VALUES "
                             + "('" + linea[0] + "', '" + linea[1] + "', '" + linea[2] + "', '" + linea[3] + "', '0')");
                 }
                 if (cargar) {
                     update = "UPDATE articulos SET stock = stock + " + linea[4]
-                            + " WHERE codigo = \"" + linea[0]
-                            + "\" AND talle = \"" + linea[1]
-                            + "\" AND color = \"" + linea[2]
-                            + "\" AND local = \"" + linea[3] + "\"";
+                            + " WHERE codigo = '" + linea[0]
+                            + "' AND talle = '" + linea[1]
+                            + "' AND color = '" + linea[2]
+                            + "' AND local = '" + linea[3] + "'";
                 } else {
                     update = "UPDATE articulos SET stock = stock - " + linea[4]
-                            + " WHERE codigo = \"" + linea[0]
-                            + "\" AND talle = \"" + linea[1]
-                            + "\" AND color = \"" + linea[2]
-                            + "\" AND local = \"" + linea[3] + "\"";
+                            + " WHERE codigo = '" + linea[0]
+                            + "' AND talle = '" + linea[1]
+                            + "' AND color = '" + linea[2]
+                            + "' AND local = '" + linea[3] + "'";
                 }
                 stmt.executeUpdate(update);
                 linea[5] = "OK";
@@ -246,31 +257,5 @@ public class ControladorArticulos {
             } catch (Exception e) {
             }
         }
-        /*
-         ArrayList<String[]> resultado = new ArrayList<String[]>();
-         try {
-         //create BufferedReader to read csv file
-         BufferedReader br = new BufferedReader(new FileReader(archivo));
-         String strLine = "";
-         StringTokenizer st = null;
-         int lineNumber = 0, tokenNumber = 0;
-         //read comma separated file line by line
-         while ((strLine = br.readLine()) != null) {
-         //break comma separated line using ","
-         st = new StringTokenizer(strLine, ",");
-         resultado.add(new String[st.countTokens() + 1]);
-         while (st.hasMoreTokens()) {
-         //display csv values
-         resultado.get(lineNumber)[tokenNumber] = st.nextToken();
-         tokenNumber++;
-         }
-         //reset token number
-         tokenNumber = 0;
-         // Nueva linea
-         lineNumber++;
-         }
-         } catch (Exception e) {
-         System.out.println("Exception while reading csv file: " + e);
-         }*/
     }
 }

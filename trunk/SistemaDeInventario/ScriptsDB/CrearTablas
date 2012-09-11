@@ -451,3 +451,39 @@ ALTER TABLE `rossisport`.`descripciones` ADD COLUMN `descripcion` VARCHAR(500) N
 
 INSERT INTO `rossisport`.`componentes` (`Componente`) VALUES ('Algodón');
 INSERT INTO `rossisport`.`componentes` (`Componente`) VALUES ('Poliester');
+
+INSERT INTO `rossisport`.`composiciones` (`codigo`, `componente`, `porcentaje`) VALUES ('Juan', 'Algodón', '100');
+INSERT INTO `rossisport`.`composiciones` (`codigo`, `componente`, `porcentaje`) VALUES ('Pepe', 'Poliester', '100');
+
+UPDATE `rossisport`.`descripciones` SET `descripcion`='' WHERE `codigo`='Juan';
+UPDATE `rossisport`.`descripciones` SET `descripcion`='' WHERE `codigo`='Pepe';
+
+ALTER TABLE `rossisport`.`composiciones` DROP FOREIGN KEY `codigo` ;
+ALTER TABLE `rossisport`.`composiciones` 
+  ADD CONSTRAINT `codigo`
+  FOREIGN KEY (`codigo` )
+  REFERENCES `rossisport`.`descripciones` (`codigo` )
+  ON DELETE CASCADE
+  ON UPDATE CASCADE;
+
+ALTER TABLE `rossisport`.`articulos` DROP FOREIGN KEY `a_codigo` ;
+ALTER TABLE `rossisport`.`articulos` 
+  ADD CONSTRAINT `a_codigo`
+  FOREIGN KEY (`codigo` )
+  REFERENCES `rossisport`.`descripciones` (`codigo` )
+  ON DELETE CASCADE
+  ON UPDATE CASCADE;
+
+ALTER TABLE `rossisport`.`articulos` DROP FOREIGN KEY `a_talle` ;
+ALTER TABLE `rossisport`.`articulos` 
+  ADD CONSTRAINT `a_talle`
+  FOREIGN KEY (`talle` )
+  REFERENCES `rossisport`.`talles` (`talle` )
+  ON DELETE NO ACTION
+  ON UPDATE CASCADE;
+
+UPDATE `rossisport`.`talles` SET `talle`='3 L' WHERE `talle`='L';
+UPDATE `rossisport`.`talles` SET `talle`='2 M' WHERE `talle`='M';
+UPDATE `rossisport`.`talles` SET `talle`='1 S' WHERE `talle`='S';
+UPDATE `rossisport`.`talles` SET `talle`='4 XL' WHERE `talle`='XL';
+INSERT INTO `rossisport`.`talles` (`talle`) VALUES ('5 XXL');
