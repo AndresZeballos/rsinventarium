@@ -6,7 +6,6 @@ package presentacion;
 
 import java.util.Hashtable;
 import java.util.List;
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JComboBox;

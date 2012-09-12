@@ -3,6 +3,7 @@ package sistemadeinventario;
 import java.io.FileInputStream;
 import java.sql.*;
 import java.util.Properties;
+import javax.swing.JOptionPane;
 
 public class ConectionH {
 
@@ -37,7 +38,7 @@ public class ConectionH {
             usuario = p.getProperty("user");
             contraseña = p.getProperty("data");
         } catch (Exception e) {
-            System.out.println("error al leer el archivo .ini:" + e.getMessage());
+            JOptionPane.showConfirmDialog(null, "Ocurrió un problema", "Error al leer la configuración", JOptionPane.CLOSED_OPTION, JOptionPane.WARNING_MESSAGE);
         }
     }
 
@@ -55,15 +56,14 @@ public class ConectionH {
             stmt = con.createStatement();
             */
         } catch (Exception e) {
-            e.printStackTrace();
-        }// end catch
+            JOptionPane.showConfirmDialog(null, "Ocurrió un problema al conectarse a la base de datos", "Error en la conección", JOptionPane.CLOSED_OPTION, JOptionPane.WARNING_MESSAGE);
+        }
     }
 
     public void Close() {
         try {
             con.close();
         } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 }

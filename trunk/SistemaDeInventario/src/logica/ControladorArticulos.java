@@ -27,9 +27,12 @@ public class ControladorArticulos {
     public static final int CODIGO_INCORRECTO = 1;
     public static final int NO_NUMERICO = 2;
     private ControladorCaracteristicas caracteristicas;
+    private ConectionH c;
 
     public ControladorArticulos(ControladorCaracteristicas caracteristicas) {
         this.caracteristicas = caracteristicas;
+        this.c = new ConectionH();
+
     }
 
     /*
@@ -37,8 +40,7 @@ public class ControladorArticulos {
      */
     public String[][] consultar(String codigo, String talle, String color, String local) {
         String[][] resultado = new String[][]{};
-        ConectionH c = new ConectionH();
-        Statement stmt = c.getStatement();
+        Statement stmt = this.c.getStatement();
         ResultSet rs;
         String consulta = "SELECT * FROM articulos";
         if (!codigo.equals("") || !talle.equals("") || !color.equals("") || !local.equals("")) {
@@ -112,28 +114,26 @@ public class ControladorArticulos {
                 resultado[rowCount][4] = String.valueOf(suma);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
         }
         return resultado;
     }
 
     public boolean actualizarStock(String codigo, String talle, String color, String local, int cantidad) {
-        ConectionH c = new ConectionH();
-        Statement stmt = c.getStatement();
+        Statement stmt = this.c.getStatement();
         ResultSet rs;
         try {
             rs = stmt.executeQuery("SELECT stock FROM articulos "
-                    + " WHERE codigo = '" + codigo + 
-                    "' AND talle = '" + talle + 
-                    "' AND color = '" + color + 
-                    "' AND local = '" + local + "'");
+                    + " WHERE codigo = '" + codigo
+                    + "' AND talle = '" + talle
+                    + "' AND color = '" + color
+                    + "' AND local = '" + local + "'");
             rs.last();
             if (rs.getRow() == 0) {
                 stmt.executeUpdate("INSERT INTO articulos (codigo, talle, color, local, stock) VALUES "
                         + "('" + codigo + "', '" + talle + "', '" + color + "', '" + local + "', '" + cantidad + "')");
             } else {
                 stmt.executeUpdate("UPDATE articulos SET stock = stock + " + cantidad + " WHERE codigo = \"" + codigo
-                + "\" AND talle = \"" + talle + "\" AND color = \"" + color + "\" AND local = \"" + local + "\"");
+                        + "\" AND talle = \"" + talle + "\" AND color = \"" + color + "\" AND local = \"" + local + "\"");
             }
         } catch (SQLException ex) {
             Logger.getLogger(ControladorArticulos.class.getName()).log(Level.SEVERE, null, ex);
@@ -147,8 +147,7 @@ public class ControladorArticulos {
         if (!validarCSV(csv)) {
             return false;
         }
-        ConectionH c = new ConectionH();
-        Statement stmt = c.getStatement();
+        Statement stmt = this.c.getStatement();
         String select, update;
         String[] linea = new String[6];
         ResultSet rs;
