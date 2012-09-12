@@ -20,14 +20,15 @@ import sistemadeinventario.ConectionH;
 public class ControladorProductos {
 
     private ControladorCaracteristicas caracteristicas;
+    private ConectionH c;
 
     public ControladorProductos(ControladorCaracteristicas caracteristicas) {
         this.caracteristicas = caracteristicas;
+        this.c = new ConectionH();
     }
 
     public boolean crear(String codigo, String marca, String categoria, String descripcion, Hashtable<String, String> componentes) {
-        ConectionH c = new ConectionH();
-        Statement stmt = c.getStatement();
+        Statement stmt = this.c.getStatement();
         String insert = "INSERT INTO descripciones (codigo, marca, categoria, descripcion) VALUES "
                 + "('" + codigo + "', '" + marca + "', '" + categoria + "', '" + descripcion + "')";
         Enumeration<String> keys = componentes.keys();
@@ -50,8 +51,7 @@ public class ControladorProductos {
 
     public Hashtable<String, String> cargarDatos(String codigo) {
         Hashtable<String, String> datos = new Hashtable<String, String>();
-        ConectionH c = new ConectionH();
-        Statement stmt = c.getStatement();
+        Statement stmt = this.c.getStatement();
         String consulta = "SELECT marca, categoria, descripcion FROM descripciones "
                 + " WHERE codigo = \"" + codigo + "\"";
         ResultSet rs;
@@ -69,8 +69,7 @@ public class ControladorProductos {
 
     public Hashtable<String, String> cargarComponentes(String codigo) {
         Hashtable<String, String> componentes = new Hashtable<String, String>();
-        ConectionH c = new ConectionH();
-        Statement stmt = c.getStatement();
+        Statement stmt = this.c.getStatement();
         String consulta = "SELECT componente, porcentaje FROM composiciones "
                 + " WHERE codigo = \"" + codigo + "\"";
         ResultSet rs;
@@ -86,8 +85,7 @@ public class ControladorProductos {
     }
 
     public boolean modificar(String codigo, String marca, String categoria, String descripcion, Hashtable<String, String> componentes) {
-        ConectionH c = new ConectionH();
-        Statement stmt = c.getStatement();
+        Statement stmt = this.c.getStatement();
         String update = "UPDATE descripciones SET marca='" + marca + 
                 "', categoria='" + categoria + 
                 "', descripcion='" + descripcion
@@ -124,8 +122,7 @@ public class ControladorProductos {
     }
 
     public boolean eliminar(String codigo) {
-        ConectionH c = new ConectionH();
-        Statement stmt = c.getStatement();
+        Statement stmt = this.c.getStatement();
         String delete = "DELETE FROM descripciones"
                 + " WHERE codigo = \"" + codigo + "\"";
         try {

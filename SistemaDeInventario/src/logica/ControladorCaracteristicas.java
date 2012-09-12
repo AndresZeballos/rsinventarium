@@ -70,7 +70,6 @@ public class ControladorCaracteristicas {
                 }
                 this.caracteristicas.put(tabla, lista);
             } catch (SQLException e) {
-                e.printStackTrace();
             }
         }
     }
