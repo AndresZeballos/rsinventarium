@@ -1407,7 +1407,7 @@ public class Principal extends javax.swing.JFrame {
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         String codigo = this.jTextField8.getText();
         if (!this.caracteristicas.existeElementoCaracteristica(codigo, "descripciones")) {
-            this.jLabel36.setText("Esta ingresando un codigo incorrecto");
+            this.jLabel39.setText("Esta ingresando un codigo incorrecto");
             return;
         }
         String marca = this.jComboBox26.getSelectedItem().toString();
