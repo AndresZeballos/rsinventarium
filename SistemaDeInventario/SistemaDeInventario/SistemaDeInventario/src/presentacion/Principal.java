@@ -1409,6 +1409,7 @@ public class Principal extends javax.swing.JFrame {
             return;
         }
         this.jLabel49.setText("");
+        this.jLabel50.setText("");
         cargarProducto(codigo, this.jComboBox30, this.jComboBox31, this.jTextField11, this.jTextArea3, this.jList3);
     }//GEN-LAST:event_jButton8ActionPerformed
 
