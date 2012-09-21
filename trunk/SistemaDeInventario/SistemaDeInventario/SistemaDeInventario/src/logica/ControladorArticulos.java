@@ -195,8 +195,8 @@ public class ControladorArticulos {
         try {
             //create BufferedReader to read csv file
             BufferedReader br = new BufferedReader(new FileReader(archivo));
-            String strLine = "";
-            StringTokenizer st = null;
+            String strLine;
+            StringTokenizer st;
             int lineNumber = 0, tokenNumber = 0;
             //read comma separated file line by line
             while ((strLine = br.readLine()) != null) {
