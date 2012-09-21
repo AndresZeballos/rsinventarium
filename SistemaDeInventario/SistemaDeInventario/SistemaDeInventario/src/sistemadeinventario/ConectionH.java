@@ -35,7 +35,7 @@ public class ConectionH {
             host = p.getProperty("host");
             puerto = p.getProperty("puerto");
             base = p.getProperty("base");
-            usuario = p.getProperty("user");
+            usuario = p.getProperty("user", "usuario");;
             contraseña = p.getProperty("data");
         } catch (Exception e) {
             JOptionPane.showConfirmDialog(null, "Ocurrió un problema", "Error al leer la configuración", JOptionPane.CLOSED_OPTION, JOptionPane.WARNING_MESSAGE);

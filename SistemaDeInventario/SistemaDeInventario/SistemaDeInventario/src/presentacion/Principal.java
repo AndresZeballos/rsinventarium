@@ -34,10 +34,18 @@ public class Principal extends javax.swing.JFrame {
     public Principal() {
         initComponents();
         this.caracteristicas = new ControladorCaracteristicas();
-        this.articulos = new ControladorArticulos(this.caracteristicas);
-        this.productos = new ControladorProductos(this.caracteristicas);
+        if (!this.caracteristicas.getOk()) {
+            JOptionPane.showConfirmDialog(null, "Error Fatal!!!", "Error Fatal!!!", JOptionPane.CLOSED_OPTION, JOptionPane.ERROR_MESSAGE);
+        } else {
+            this.articulos = new ControladorArticulos(this.caracteristicas);
+            this.productos = new ControladorProductos(this.caracteristicas);
 
-        cargarPantallas(true);
+            cargarPantallas(true);
+        }
+    }
+
+    public boolean getOk() {
+        return this.caracteristicas.getOk();
     }
 
     private void cargarPantallas(boolean text) {
