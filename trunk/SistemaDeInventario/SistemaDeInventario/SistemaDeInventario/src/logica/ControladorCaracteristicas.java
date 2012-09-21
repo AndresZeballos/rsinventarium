@@ -21,8 +21,10 @@ public class ControladorCaracteristicas {
 
     private Hashtable<String, List> caracteristicas;
     private boolean ok;
-
+    private String msg;
+    
     public ControladorCaracteristicas() {
+        msg = "";
         initCaracteristicas();
     }
 
@@ -62,6 +64,11 @@ public class ControladorCaracteristicas {
             "meses"
         };
         ConectionH c = new ConectionH();
+        if(!c.getOk()){
+            this.msg = "Problema de conectividad!";
+            this.ok = false;
+            return;
+        }
         Statement stmt = c.getStatement();
         ResultSet rs;
         List<String> lista;
@@ -85,6 +92,7 @@ public class ControladorCaracteristicas {
         }
         if (!this.existeElementoCaracteristica(fecha, "meses")) {
             this.ok = false;
+            this.msg = "Error Fatal!!!";
             this.caracteristicas = new Hashtable<String, List>();
         } else {
             this.ok = true;
@@ -93,6 +101,10 @@ public class ControladorCaracteristicas {
 
     public boolean getOk() {
         return this.ok;
+    }
+    
+    public String getMsg(){
+        return this.msg;
     }
 
     public List<String> getCaracteristica(String caracteristica) {

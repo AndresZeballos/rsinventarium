@@ -35,7 +35,8 @@ public class Principal extends javax.swing.JFrame {
         initComponents();
         this.caracteristicas = new ControladorCaracteristicas();
         if (!this.caracteristicas.getOk()) {
-            JOptionPane.showConfirmDialog(null, "Error Fatal!!!", "Error Fatal!!!", JOptionPane.CLOSED_OPTION, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showConfirmDialog(null, this.caracteristicas.getMsg() + "\nLa aplicación no puede continuar.", "Error Fatal!!!", JOptionPane.CLOSED_OPTION, JOptionPane.ERROR_MESSAGE);
+            this.dispose();
         } else {
             this.articulos = new ControladorArticulos(this.caracteristicas);
             this.productos = new ControladorProductos(this.caracteristicas);
@@ -45,7 +46,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
     public boolean getOk() {
-        return this.caracteristicas.getOk();
+        return this.caracteristicas.getOk() && this.caracteristicas.getMsg().equals("");
     }
 
     private void cargarPantallas(boolean text) {

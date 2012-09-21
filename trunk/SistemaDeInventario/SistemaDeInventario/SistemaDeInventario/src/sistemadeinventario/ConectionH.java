@@ -10,7 +10,12 @@ public class ConectionH {
     private Statement stmt;
     private Connection con;
     private String driver, jdbc, host, puerto, base, usuario, contraseña;
+    private boolean ok;
 
+    
+    public boolean getOk() {
+        return this.ok;
+    }
     public Statement getStatement() {
         return this.stmt;
     }
@@ -38,6 +43,7 @@ public class ConectionH {
             usuario = p.getProperty("user", "usuario");
             contraseña = p.getProperty("data");
         } catch (Exception e) {
+            this.ok = false;
             JOptionPane.showConfirmDialog(null, "Ocurrió un problema", "Error al leer la configuración", JOptionPane.CLOSED_OPTION, JOptionPane.WARNING_MESSAGE);
         }
     }
@@ -49,6 +55,7 @@ public class ConectionH {
             String url = jdbc + host + puerto + base;// "jdbc:mysql://localhost:3306/rossisport";
             con = DriverManager.getConnection(url, usuario, contraseña);
             stmt = con.createStatement();
+            this.ok = true;
             /*
             Class.forName("com.mysql.jdbc.Driver");
             String url = "jdbc:mysql://localhost:3306/rossisport";
@@ -56,6 +63,7 @@ public class ConectionH {
             stmt = con.createStatement();
             */
         } catch (Exception e) {
+            this.ok = false;
             JOptionPane.showConfirmDialog(null, "Ocurrió un problema al conectarse a la base de datos", "Error en la conección", JOptionPane.CLOSED_OPTION, JOptionPane.WARNING_MESSAGE);
         }
     }
