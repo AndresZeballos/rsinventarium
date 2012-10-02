@@ -38,37 +38,60 @@ public class ControladorArticulos {
     /*
      * Metodo responsable de realizar las consultas de stock
      */
-    public String[][] consultar(String codigo, String talle, String color, String local) {
+    public String[][] consultar(String codigo, String talle, String color, String local, String categoria, String marca, String tela) {
         String[][] resultado = new String[][]{};
         Statement stmt = this.c.getStatement();
         ResultSet rs;
-        String consulta = "SELECT * FROM articulos";
-        if (!codigo.equals("") || !talle.equals("") || !color.equals("") || !local.equals("")) {
+        String consulta = "SELECT articulos.codigo, articulos.talle, articulos.color, articulos.local, articulos.stock FROM articulos, descripciones, composiciones";
+        consulta += " WHERE articulos.codigo = descripciones.codigo AND articulos.codigo = composiciones.codigo";
+        if (!codigo.equals("") || !talle.equals("") || !color.equals("") || !local.equals("") || !categoria.equals("") || !marca.equals("") || !tela.equals("")) {
             boolean solo_uno = true;
-            consulta += " WHERE";
+            consulta += " AND";
             if (!codigo.equals("")) {
-                consulta += " codigo = \"" + codigo + "\"";
+                consulta += " articulos.codigo = \"" + codigo + "\"";
                 solo_uno = false;
             }
             if (!talle.equals("")) {
                 if (!solo_uno) {
                     consulta += " AND";
                 }
-                consulta += " talle = \"" + talle + "\"";
+                consulta += " articulos.talle = \"" + talle + "\"";
                 solo_uno = false;
             }
             if (!color.equals("")) {
                 if (!solo_uno) {
                     consulta += " AND";
                 }
-                consulta += " color = \"" + color + "\"";
+                consulta += " articulos.color = \"" + color + "\"";
                 solo_uno = false;
             }
             if (!local.equals("")) {
                 if (!solo_uno) {
                     consulta += " AND";
                 }
-                consulta += " local = \"" + local + "\"";
+                consulta += " articulos.local = \"" + local + "\"";
+                solo_uno = false;
+            }
+            if (!categoria.equals("")) {
+                if (!solo_uno) {
+                    consulta += " AND";
+                }
+                consulta += " descripciones.categoria = \"" + categoria + "\"";
+                solo_uno = false;
+            }
+            if (!marca.equals("")) {
+                if (!solo_uno) {
+                    consulta += " AND";
+                }
+                consulta += " descripciones.marca = \"" + marca + "\"";
+                solo_uno = false;
+            }
+            if (!tela.equals("")) {
+                if (!solo_uno) {
+                    consulta += " AND";
+                }
+                consulta += " composiciones.componente = \"" + tela + "\"";
+                //solo_uno = false;
             }
         }
         try {
