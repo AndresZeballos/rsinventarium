@@ -142,7 +142,7 @@ public class ControladorCaracteristicas {
             columna = columna.substring(0, columna.length() - 1);
         }
 
-        System.out.println(tabla + ";" + elemento);
+        System.out.println(tabla + ";" + columna + ";" + elemento);
         ConectionH c = new ConectionH();
         if (!c.getOk()) {
             this.msg = "Problema de conectividad!";
