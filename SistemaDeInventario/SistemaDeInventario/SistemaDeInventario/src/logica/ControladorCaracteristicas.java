@@ -22,7 +22,7 @@ public class ControladorCaracteristicas {
     private Hashtable<String, List> caracteristicas;
     private boolean ok;
     private String msg;
-    
+
     public ControladorCaracteristicas() {
         msg = "";
         initCaracteristicas();
@@ -64,7 +64,7 @@ public class ControladorCaracteristicas {
             "meses"
         };
         ConectionH c = new ConectionH();
-        if(!c.getOk()){
+        if (!c.getOk()) {
             this.msg = "Problema de conectividad!";
             this.ok = false;
             return;
@@ -102,8 +102,8 @@ public class ControladorCaracteristicas {
     public boolean getOk() {
         return this.ok;
     }
-    
-    public String getMsg(){
+
+    public String getMsg() {
         return this.msg;
     }
 
@@ -114,5 +114,49 @@ public class ControladorCaracteristicas {
     public boolean existeElementoCaracteristica(String elemento, String caracteristica) {
         List a = this.caracteristicas.get(caracteristica);
         return a.contains(elemento);
+    }
+
+    public boolean crear(String tabla, String elemento) {
+        System.out.println(tabla + ";" + elemento);
+
+        ConectionH c = new ConectionH();
+        if (!c.getOk()) {
+            this.msg = "Problema de conectividad!";
+            this.ok = false;
+            return false;
+        }
+        Statement stmt = c.getStatement();
+        try {
+            stmt.executeUpdate("INSERT INTO " + tabla + " VALUES ('" + elemento + "')");
+        } catch (SQLException e) {
+            this.msg = "Problema de inserción!\nNo esta permitida esta operación";
+            this.ok = false;
+            return false;
+        }
+        return true;
+    }
+
+    public boolean eliminar(String tabla, String elemento) {
+        String columna = tabla.substring(0, tabla.length() - 1);
+        if (columna.charAt(columna.length() - 1) == 'e') {
+            columna = columna.substring(0, columna.length() - 1);
+        }
+
+        System.out.println(tabla + ";" + elemento);
+        ConectionH c = new ConectionH();
+        if (!c.getOk()) {
+            this.msg = "Problema de conectividad!";
+            this.ok = false;
+            return false;
+        }
+        Statement stmt = c.getStatement();
+        try {
+            stmt.executeUpdate("DELETE FROM " + tabla + " WHERE " + columna + " = '" + elemento + "'");
+        } catch (SQLException e) {
+            this.msg = "Problema de eliminación!\nNo esta permitida esta operación";
+            this.ok = false;
+            return false;
+        }
+        return true;
     }
 }
