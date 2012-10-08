@@ -42,8 +42,8 @@ public class ControladorArticulos {
         String[][] resultado = new String[][]{};
         Statement stmt = this.c.getStatement();
         ResultSet rs;
-        String consulta = "SELECT DISTINCT articulos.codigo, articulos.talle, articulos.color, articulos.local, articulos.stock FROM articulos, descripciones, composiciones";
-        consulta += " WHERE articulos.codigo = descripciones.codigo AND articulos.codigo = composiciones.codigo";
+        String consulta = "";
+        String tablas = "articulos, descripciones";
         if (!codigo.equals("") || !talle.equals("") || !color.equals("") || !local.equals("") || !categoria.equals("") || !marca.equals("") || !tela.equals("")) {
             boolean solo_uno = true;
             consulta += " AND";
@@ -87,6 +87,8 @@ public class ControladorArticulos {
                 solo_uno = false;
             }
             if (!tela.equals("")) {
+                tablas += ", composiciones";
+                consulta = " AND articulos.codigo = composiciones.codigo" + consulta;
                 if (!solo_uno) {
                     consulta += " AND";
                 }
@@ -95,6 +97,8 @@ public class ControladorArticulos {
             }
         }
         try {
+            consulta = " WHERE articulos.codigo = descripciones.codigo" + consulta;
+            consulta = "SELECT DISTINCT articulos.codigo, articulos.talle, articulos.color, articulos.local, articulos.stock FROM " + tablas + consulta;
             rs = stmt.executeQuery(consulta);
             rs.last();
             int rowCount = rs.getRow();

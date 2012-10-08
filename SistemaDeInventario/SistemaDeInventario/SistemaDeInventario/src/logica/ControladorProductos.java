@@ -115,6 +115,7 @@ public class ControladorProductos {
                             + "' WHERE codigo='" + codigo + "' AND component='" + key + "'");
                 }
             }
+            stmt.executeUpdate("DELETE FROM composiciones WHERE porcentaje = 0");
         } catch (SQLException ex) {
             Logger.getLogger(ControladorArticulos.class.getName()).log(Level.SEVERE, null, ex);
         }

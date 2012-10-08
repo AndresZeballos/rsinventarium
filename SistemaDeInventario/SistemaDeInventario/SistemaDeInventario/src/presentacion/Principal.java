@@ -1847,9 +1847,7 @@ public class Principal extends javax.swing.JFrame {
                 this.jLabel43.setText("Los porcentajes no son numericos");
                 return;
             }
-            if (porc != 0) {
-                componentes.put(model.getElementAt(i).toString(), porcentajes[i]);
-            }
+            componentes.put(model.getElementAt(i).toString(), porcentajes[i]);
         }
         if (this.productos.modificar(codigo, marca, categoria, this.jTextField9.getText(), componentes)) {
             this.jLabel39.setText("Se modificó el producto");
