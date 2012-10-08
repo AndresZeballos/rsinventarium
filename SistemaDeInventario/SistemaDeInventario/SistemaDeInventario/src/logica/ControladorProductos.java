@@ -37,7 +37,7 @@ public class ControladorProductos {
             stmt.executeUpdate(insert);
             while (keys.hasMoreElements()) {
                 key = keys.nextElement();
-                insert = "INSERT INTO composiciones (codigo, componente, porcentaje) VALUES "
+                insert = "INSERT INTO composiciones (codigo, component, porcentaje) VALUES "
                         + "('" + codigo + "', '" + key + "', '" + componentes.get(key) + "')";
                 stmt.executeUpdate(insert);
             }
@@ -70,13 +70,13 @@ public class ControladorProductos {
     public Hashtable<String, String> cargarComponentes(String codigo) {
         Hashtable<String, String> componentes = new Hashtable<String, String>();
         Statement stmt = this.c.getStatement();
-        String consulta = "SELECT componente, porcentaje FROM composiciones "
+        String consulta = "SELECT component, porcentaje FROM composiciones "
                 + " WHERE codigo = \"" + codigo + "\"";
         ResultSet rs;
         try {
             rs = stmt.executeQuery(consulta);
             while (rs.next()) {
-                componentes.put(rs.getString("componente"), rs.getString("porcentaje"));
+                componentes.put(rs.getString("component"), rs.getString("porcentaje"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(ControladorArticulos.class.getName()).log(Level.SEVERE, null, ex);
@@ -104,15 +104,15 @@ public class ControladorProductos {
             while (keys.hasMoreElements()) {
                 key = keys.nextElement();
                 select = "SELECT porcentaje FROM composiciones "
-                        + " WHERE codigo = '" + codigo + "' AND componente = '" + key + "'";
+                        + " WHERE codigo = '" + codigo + "' AND component = '" + key + "'";
                 rs = stmt.executeQuery(select);
                 rs.last();
                 if (rs.getRow() == 0) {
-                    stmt.executeUpdate("INSERT INTO composiciones (codigo, componente, porcentaje) VALUES "
+                    stmt.executeUpdate("INSERT INTO composiciones (codigo, component, porcentaje) VALUES "
                             + "('" + codigo + "', '" + key + "', '" + componentes.get(key) + "')");
                 } else {
                     stmt.executeUpdate("UPDATE composiciones SET porcentaje='" + componentes.get(key)
-                            + "' WHERE codigo='" + codigo + "' AND componente='" + key + "'");
+                            + "' WHERE codigo='" + codigo + "' AND component='" + key + "'");
                 }
             }
         } catch (SQLException ex) {

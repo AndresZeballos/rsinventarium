@@ -1937,7 +1937,7 @@ public class Principal extends javax.swing.JFrame {
         String elemento = this.jTextField14.getText();
         boolean res = this.caracteristicas.crear(tabla, elemento);
         if (!res) {
-            JOptionPane.showConfirmDialog(null, this.caracteristicas.getMsg() + "\nLa aplicación no puede continuar.", "Error Fatal!!!", JOptionPane.CLOSED_OPTION, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showConfirmDialog(null, this.caracteristicas.getMsg(), "Error Fatal!!!", JOptionPane.CLOSED_OPTION, JOptionPane.ERROR_MESSAGE);
         } else {
             this.caracteristicas.initCaracteristicas();
             cargarPantallas(false);
