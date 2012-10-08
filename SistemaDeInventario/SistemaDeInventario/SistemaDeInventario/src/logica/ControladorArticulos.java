@@ -42,7 +42,7 @@ public class ControladorArticulos {
         String[][] resultado = new String[][]{};
         Statement stmt = this.c.getStatement();
         ResultSet rs;
-        String consulta = "SELECT articulos.codigo, articulos.talle, articulos.color, articulos.local, articulos.stock FROM articulos, descripciones, composiciones";
+        String consulta = "SELECT DISTINCT articulos.codigo, articulos.talle, articulos.color, articulos.local, articulos.stock FROM articulos, descripciones, composiciones";
         consulta += " WHERE articulos.codigo = descripciones.codigo AND articulos.codigo = composiciones.codigo";
         if (!codigo.equals("") || !talle.equals("") || !color.equals("") || !local.equals("") || !categoria.equals("") || !marca.equals("") || !tela.equals("")) {
             boolean solo_uno = true;
@@ -90,7 +90,7 @@ public class ControladorArticulos {
                 if (!solo_uno) {
                     consulta += " AND";
                 }
-                consulta += " composiciones.componente = \"" + tela + "\"";
+                consulta += " composiciones.component = \"" + tela + "\"";
                 //solo_uno = false;
             }
         }

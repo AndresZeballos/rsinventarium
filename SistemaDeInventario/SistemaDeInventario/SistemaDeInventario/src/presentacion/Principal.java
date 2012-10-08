@@ -15,6 +15,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import logica.ControladorArticulos;
 import logica.ControladorCaracteristicas;
 import logica.ControladorPrecios;
