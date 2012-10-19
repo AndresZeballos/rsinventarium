@@ -86,21 +86,21 @@ public class Principal extends javax.swing.JFrame {
         // Modificaciones para precios
         cargarCombo("descripciones", this.jComboBox35);
         cargarCombo("talles", this.jComboBox36);
-        
+
         // Modificaciines para AB generico
-        
+
         // Colores es el primer elemento del combo 38
         cargarCombo("colores", this.jComboBox39);
-        
+
         // Modificaciones para el Ver de producto
-        
+
         cargarCombo("descripciones", this.jComboBox42);
         cargarCombo("marcas", this.jComboBox40);
         cargarCombo("categorias", this.jComboBox41);
         cargarList("componentes", this.jList4, this.jTextArea4, text);
 
-        
-        
+
+
     }
 
     private void cargarCombo(String tabla, JComboBox comboBox) {
@@ -111,17 +111,6 @@ public class Principal extends javax.swing.JFrame {
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         model.addElement("");
         List<String> l = this.caracteristicas.getCaracteristica(tabla);
-        if (tabla.equals("talles")) {
-            l = new ArrayList<String>();
-            l.add("S");
-            l.add("M");
-            l.add("L");
-            l.add("XL");
-            l.add("2XL");
-            l.add("3XL");
-            l.add("4XL");
-            l.add("5XL");
-        }
         for (String m : l) {
             model.addElement(m);
         }

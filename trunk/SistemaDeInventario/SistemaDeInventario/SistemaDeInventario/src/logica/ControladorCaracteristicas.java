@@ -108,6 +108,47 @@ public class ControladorCaracteristicas {
     }
 
     public List<String> getCaracteristica(String caracteristica) {
+        if (caracteristica.equals("talles")) {
+            List<String> l = new ArrayList<String>();
+            l.add("XS");
+            l.add("S");
+            l.add("M");
+            l.add("L");
+            l.add("XL");
+            l.add("2XL");
+            l.add("3XL");
+            l.add("4XL");
+            l.add("5XL");
+            l.add("");
+            l.add("14");
+            l.add("16");
+            l.add("");
+            l.add("28");
+            l.add("30");
+            l.add("32");
+            l.add("34");
+            l.add("36");
+            l.add("38");
+            l.add("40");
+            l.add("42");
+            l.add("44");
+            l.add("46");
+            l.add("48");
+            l.add("50");
+            l.add("52");
+            l.add("54");
+            l.add("56");
+            l.add("58");
+            l.add("60");
+            l.add("62");
+            l.add("64");
+            l.add("66");
+            l.add("68");
+            l.add("70");
+            l.add("72");
+            l.add("74");
+            return l;
+        }
         return this.caracteristicas.get(caracteristica);
     }
 
