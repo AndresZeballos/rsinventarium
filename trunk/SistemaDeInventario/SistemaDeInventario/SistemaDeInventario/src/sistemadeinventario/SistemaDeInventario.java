@@ -13,6 +13,8 @@ import presentacion.Principal;
 public class SistemaDeInventario {
 
     /**
+     * Main del cliente.
+     * No se utilizan parametros
      * @param args the command line arguments
      */
     public static void main(String[] args) {
@@ -20,6 +22,7 @@ public class SistemaDeInventario {
         if (principal.getOk()) {
             principal.setVisible(true);
         } else {
+            // Si la aplicación no puede levantar, mata al proceso.
             principal.dispose();
         }
     }

@@ -15,10 +15,12 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import sistemadeinventario.ConectionH;
 
 /**
- *
+ * Esta clase es responsable de realizar las consultas de stock y las 
+ * actualizaciones sobre el mismo
  * @author Andres
  */
 public class ControladorArticulos {
@@ -32,7 +34,6 @@ public class ControladorArticulos {
     public ControladorArticulos(ControladorCaracteristicas caracteristicas) {
         this.caracteristicas = caracteristicas;
         this.c = new ConectionH();
-
     }
 
     /*
@@ -44,6 +45,7 @@ public class ControladorArticulos {
         ResultSet rs;
         String consulta = "";
         String tablas = "articulos, descripciones";
+        // Arma las condiciones de la consulta a partir de los filtros presentes
         if (!codigo.equals("") || !talle.equals("") || !color.equals("") || !local.equals("") || !categoria.equals("") || !marca.equals("") || !tela.equals("")) {
             boolean solo_uno = true;
             consulta += " AND";
@@ -93,13 +95,14 @@ public class ControladorArticulos {
                     consulta += " AND";
                 }
                 consulta += " composiciones.component = \"" + tela + "\"";
-                //solo_uno = false;
             }
         }
         try {
+            // Completa la consulta con las tablas, reuniones y condiciones
             consulta = " WHERE articulos.codigo = descripciones.codigo" + consulta;
             consulta = "SELECT DISTINCT articulos.codigo, articulos.talle, articulos.color, articulos.local, articulos.stock FROM " + tablas + consulta;
             rs = stmt.executeQuery(consulta);
+            // Crea la estructura a retornar a partir de la cantidad de resultados de la consulta
             rs.last();
             int rowCount = rs.getRow();
             if (rowCount != 1) {
@@ -109,6 +112,7 @@ public class ControladorArticulos {
             }
             int suma = 0;
             rs.first();
+            // Carga los resultados en la estructura
             for (int i = 0; i < rowCount; i++, rs.next()) {
                 resultado[i][0] = rs.getString("codigo");
                 resultado[i][1] = rs.getString("talle");
@@ -117,6 +121,7 @@ public class ControladorArticulos {
                 resultado[i][4] = rs.getString("stock");
                 suma += Integer.parseInt(rs.getString("stock"));
             }
+            // Agrega la fila con los datos genericos (*) o concretos y su suma
             if (rowCount != 1) {
                 if (!codigo.equals("")) {
                     resultado[rowCount][0] = codigo;
@@ -141,6 +146,7 @@ public class ControladorArticulos {
                 resultado[rowCount][4] = String.valueOf(suma);
             }
         } catch (SQLException e) {
+            JOptionPane.showConfirmDialog(null, "Ocurrió un problema al consultar el stock.", "Error!", JOptionPane.CLOSED_OPTION, JOptionPane.ERROR_MESSAGE);
         }
         return resultado;
     }
@@ -169,11 +175,17 @@ public class ControladorArticulos {
         return true;
     }
 
-    public boolean cargar(String archivo, boolean cargar) {
+    /*
+     * Procesa el archivo aumentando o reduciendo el stock dependiendo
+     * del parametro aumentar.
+     */
+    public boolean cargar(String archivo, boolean aumentar) {
+        // Carga el contenido del archivo y lo valida
         ArrayList<String[]> csv = levantarCSV(archivo);
         if (!validarCSV(csv)) {
             return false;
         }
+        // Procesa el CSV actualizando el stock
         Statement stmt = this.c.getStatement();
         String select, update;
         String[] linea = new String[6];
@@ -181,6 +193,7 @@ public class ControladorArticulos {
         for (int i = 0; i < csv.size(); i++) {
             try {
                 linea = csv.get(i);
+                // Consulta si existe la fila con los datos
                 select = "SELECT * FROM articulos "
                         + " WHERE codigo = '" + linea[0]
                         + "' AND talle = '" + linea[1]
@@ -189,11 +202,13 @@ public class ControladorArticulos {
                 rs = stmt.executeQuery(select);
                 rs.last();
                 if (rs.getRow() == 0) {
+                    // Si no existe la crea con stock 0 (cero)
                     stmt.executeUpdate("INSERT INTO articulos "
                             + "(codigo, talle, color, local, stock) VALUES "
                             + "('" + linea[0] + "', '" + linea[1] + "', '" + linea[2] + "', '" + linea[3] + "', '0')");
                 }
-                if (cargar) {
+                // Aumenta o reduce el stock del articulo
+                if (aumentar) {
                     update = "UPDATE articulos SET stock = stock + " + linea[4]
                             + " WHERE codigo = '" + linea[0]
                             + "' AND talle = '" + linea[1]
@@ -209,14 +224,19 @@ public class ControladorArticulos {
                 stmt.executeUpdate(update);
                 linea[5] = "OK";
             } catch (SQLException ex) {
-                Logger.getLogger(ControladorArticulos.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showConfirmDialog(null, "Ocurrió un problema al actualizar el stock.\nAbra el archivo por más detalles.", "Error!", JOptionPane.CLOSED_OPTION, JOptionPane.ERROR_MESSAGE);
                 linea[5] = "NO";
             }
         }
+        // Guarda el resultado de la operación
         guardarCSV(archivo, csv);
         return true;
     }
 
+    /*
+     * Abre el archivo pasado por parametro y lee su contenido
+     * almacenandolo en memoria para procesarlo.
+     */
     private ArrayList<String[]> levantarCSV(String archivo) {
         ArrayList<String[]> resultado = new ArrayList<String[]>();
         try {
@@ -240,23 +260,33 @@ public class ControladorArticulos {
                 // Nueva linea
                 lineNumber++;
             }
+            br.close();
         } catch (Exception e) {
-            System.out.println("Exception while reading csv file: " + e);
+            JOptionPane.showConfirmDialog(null, "Ocurrió un problema al leer el CSV.", "Error!", JOptionPane.CLOSED_OPTION, JOptionPane.ERROR_MESSAGE);
         }
         return resultado;
     }
 
+    /*
+     * Valida que los códigos de todos los artículos a ingresar 
+     * esten dados de alta en el sistema.
+     */
     private boolean validarCSV(ArrayList<String[]> csv) {
-        boolean resultado = true;
         String[] linea;
         for (int i = 0; i < csv.size(); i++) {
             linea = csv.get(i);
-            resultado = resultado
-                    && this.caracteristicas.existeElementoCaracteristica(linea[0], "descripciones");
+            if(!this.caracteristicas.existeElementoCaracteristica(linea[0], "descripciones")){
+                // Si no existe el código del producto
+                return false;
+            }
         }
-        return resultado;
+        return true;
     }
 
+    /*
+     * Luego de procesar el CSV, se guarda su información agregando el
+     * resultado en cada fila ("OK" o "NO")
+     */
     private void guardarCSV(String archivo, ArrayList<String[]> resultado) {
         FileWriter fichero = null;
         BufferedWriter bw;
@@ -265,22 +295,27 @@ public class ControladorArticulos {
         try {
             fichero = new FileWriter(archivo);
             bw = new BufferedWriter(fichero);
+            // Para cada línea del archivo
             for (int i = 0; i < resultado.size(); i++) {
+                // Arma la línea nuevamente más el resultado
                 str = "";
                 linea = resultado.get(i);
                 for (int j = 0; j < linea.length; j++) {
                     str += linea[j] + ",";
                 }
+                // Escribe la línea en el archivo
                 bw.write(str + "\n");
             }
             bw.close();
         } catch (Exception e) {
+            JOptionPane.showConfirmDialog(null, "Ocurrió un problema al guardar el CSV.", "Error!", JOptionPane.CLOSED_OPTION, JOptionPane.ERROR_MESSAGE);
         } finally {
             try {
                 if (fichero != null) {
                     fichero.close();
                 }
             } catch (Exception e) {
+                JOptionPane.showConfirmDialog(null, "Ocurrió un problema al cerrar el CSV.", "Error!", JOptionPane.CLOSED_OPTION, JOptionPane.ERROR_MESSAGE);
             }
         }
     }

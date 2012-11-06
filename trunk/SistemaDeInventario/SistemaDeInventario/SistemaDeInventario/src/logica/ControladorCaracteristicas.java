@@ -14,24 +14,50 @@ import java.util.List;
 import sistemadeinventario.ConectionH;
 
 /**
- *
+ * Esta clase se encarga de controlar las tablas basicas de caracteristicas, 
+ * las cuales completan los listados de opciones de las pantallas
+ * También es responsable de validar el mantenimiento del sistema
+ * Esto se debe a que la tabla de control de mantenimiento tiene la misma
+ * estructura básica de las caracteristicas, y por eso se reutiliza esa lógica
+ * Es la primer controladora a instanciarse para que realiza la validación
+ * al comienzo de la ejecución del programa
  * @author Andres
  */
 public class ControladorCaracteristicas {
 
+    // Este hashtable contiene los pares:
+    // nombre de tabla (o caracteristica) como clave
+    // Y el contenido de la tabla como valor
     private Hashtable<String, List> caracteristicas;
+    // Campos utilizado para informar errores de conectividad y otros errores
     private boolean ok;
     private String msg;
+    
+    private ConectionH c;
 
     public ControladorCaracteristicas() {
-        msg = "";
+        this.ok = true;
+        this.msg = "";
+        this.c = new ConectionH();
+        if (!this.c.getOk()) {
+            this.msg = "Problema de conectividad!";
+            this.ok = false;
+            return;
+        }
         initCaracteristicas();
+        validarMantenimiento();
     }
 
+    /*
+     * Carga a memoria el contenido de las tablas de la base de datos
+     * de las caracteriasticas.
+     */
     public void initCaracteristicas() {
         this.caracteristicas = new Hashtable<String, List>();
         String[] tablas = {
             // Caracteristicas propias de la descripción de los articulos
+            // Estas categorias solo agregaban complejidad al sistema
+            // Y aportaban de manera clara un uso o beneficio
             /*
              "pinzas",
              "telas",
@@ -52,7 +78,7 @@ public class ControladorCaracteristicas {
              "vbase",
              "cortolargo",
              */
-            //
+            // Categorias necesarias del sistema y comunes a los productos
             "colores",
             "talles",
             "locales",
@@ -63,15 +89,10 @@ public class ControladorCaracteristicas {
             // Controlador de pago de servicio
             "meses"
         };
-        ConectionH c = new ConectionH();
-        if (!c.getOk()) {
-            this.msg = "Problema de conectividad!";
-            this.ok = false;
-            return;
-        }
         Statement stmt = c.getStatement();
         ResultSet rs;
         List<String> lista;
+        // Para cada tabla listada, carga su contenido en memoria.
         for (String tabla : tablas) {
             try {
                 rs = stmt.executeQuery("SELECT * from " + tabla);
@@ -81,21 +102,29 @@ public class ControladorCaracteristicas {
                 }
                 this.caracteristicas.put(tabla, lista);
             } catch (SQLException e) {
+                this.msg = "Problema SQLException al iniciar las caracteristicas!";
+                this.ok = false;
+                return;
             }
         }
+    }
+
+    /*
+     * Valida que el mantenimiento haya sido realizado.
+     */
+    public void validarMantenimiento() {
+        // Formatea el string con el mes actual y año (MM/YYYY)
         Date d = new Date();
-        String fecha;
+        String fecha = (d.getMonth() + 1) + "/" + (d.getYear() + 1900);
         if ((d.getMonth() + 1) < 10) {
-            fecha = "0" + (d.getMonth() + 1) + "/" + (d.getYear() + 1900);
-        } else {
-            fecha = "" + (d.getMonth() + 1) + "/" + (d.getYear() + 1900);
+            fecha = "0" + fecha;
         }
+        // Verifica que exista el registro en la base de datos
         if (!this.existeElementoCaracteristica(fecha, "meses")) {
+            // De no existir, termina la inicialización en error
             this.ok = false;
-            this.msg = "Error Fatal!!!";
+            this.msg = "La aplicación necesita mantenimiento!!!";
             this.caracteristicas = new Hashtable<String, List>();
-        } else {
-            this.ok = true;
         }
     }
 
@@ -107,7 +136,13 @@ public class ControladorCaracteristicas {
         return this.msg;
     }
 
+    /*
+     * Retorna el contenido de la tabla (caracteristica) con el
+     * nombre pasado por parametro.
+     */
     public List<String> getCaracteristica(String caracteristica) {
+        // Para la tabla de talles se carga el contenido de la siguiente
+        // manera:  (La tabla de talles no se puede modificar con la aplicación)
         if (caracteristica.equals("talles")) {
             List<String> l = new ArrayList<String>();
             l.add("XS");
@@ -149,23 +184,23 @@ public class ControladorCaracteristicas {
             l.add("74");
             return l;
         }
+        // Las demás tablas retornan su contenido directamente.
         return this.caracteristicas.get(caracteristica);
     }
 
+    /*
+     * Retorna verdadero si existe el elemento en la caracteristica.
+     */
     public boolean existeElementoCaracteristica(String elemento, String caracteristica) {
         List a = this.caracteristicas.get(caracteristica);
         return a.contains(elemento);
     }
 
+    /*
+     * Inserta el elemento en la tabla y retorna el resultado de la operación.
+     */
     public boolean crear(String tabla, String elemento) {
-        System.out.println(tabla + ";" + elemento);
-
-        ConectionH c = new ConectionH();
-        if (!c.getOk()) {
-            this.msg = "Problema de conectividad!";
-            this.ok = false;
-            return false;
-        }
+        // Se realiza la inserción.
         Statement stmt = c.getStatement();
         try {
             stmt.executeUpdate("INSERT INTO " + tabla + " VALUES ('" + elemento + "')");
@@ -177,19 +212,21 @@ public class ControladorCaracteristicas {
         return true;
     }
 
+    /*
+     * Elimina el elemento de la tabla y retorna el resultado de la operación.
+     */
     public boolean eliminar(String tabla, String elemento) {
+        /* Se tomó la siguiente convención:
+         * El nombre de la columna es el mismo que la tabla sin 
+         * la "s" final. Si al quitar la "s", y la palabra queda
+         * terminando en "e", también se quita la "e". 
+         */
+        // Se procesa el nombre de la columna en base a la convención.
         String columna = tabla.substring(0, tabla.length() - 1);
         if (columna.charAt(columna.length() - 1) == 'e') {
             columna = columna.substring(0, columna.length() - 1);
         }
-
-        System.out.println(tabla + ";" + columna + ";" + elemento);
-        ConectionH c = new ConectionH();
-        if (!c.getOk()) {
-            this.msg = "Problema de conectividad!";
-            this.ok = false;
-            return false;
-        }
+        // Se realiza la eliminación.
         Statement stmt = c.getStatement();
         try {
             stmt.executeUpdate("DELETE FROM " + tabla + " WHERE " + columna + " = '" + elemento + "'");
