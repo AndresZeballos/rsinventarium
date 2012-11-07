@@ -224,6 +224,8 @@ public class Principal extends javax.swing.JFrame {
         BajarArticulos_Bajar = new javax.swing.JButton();
         jFileChooser2 = new javax.swing.JFileChooser();
         jLabel12 = new javax.swing.JLabel();
+        jPanel10 = new javax.swing.JPanel();
+        jTabbedPane2 = new javax.swing.JTabbedPane();
         jPanel5 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
         jTextField4 = new javax.swing.JTextField();
@@ -746,7 +748,7 @@ public class Principal extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel35, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 442, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(494, Short.MAX_VALUE))
+                .addContainerGap(469, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -779,10 +781,10 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(jLabel15)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel35, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(259, Short.MAX_VALUE))
+                .addContainerGap(209, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Crear producto", jPanel5);
+        jTabbedPane2.addTab("Crear producto", jPanel5);
 
         jLabel60.setText("Código de producto");
 
@@ -875,7 +877,7 @@ public class Principal extends javax.swing.JFrame {
                             .addComponent(jComboBox42, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(18, 18, 18)
                             .addComponent(VerProducto_CargarDatos))))
-                .addContainerGap(506, Short.MAX_VALUE))
+                .addContainerGap(481, Short.MAX_VALUE))
         );
         jPanel15Layout.setVerticalGroup(
             jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -905,10 +907,10 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(jLabel65)
                     .addComponent(jLabel66, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(258, Short.MAX_VALUE))
+                .addContainerGap(208, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Ver producto", jPanel15);
+        jTabbedPane2.addTab("Ver producto", jPanel15);
 
         jLabel37.setText("Código de producto");
 
@@ -1011,7 +1013,7 @@ public class Principal extends javax.swing.JFrame {
                                     .addComponent(jComboBox28, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGap(18, 18, 18)
                                     .addComponent(ModificarProducto_CargarDatos))))))
-                .addContainerGap(506, Short.MAX_VALUE))
+                .addContainerGap(481, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1045,10 +1047,10 @@ public class Principal extends javax.swing.JFrame {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(ModificarProducto_Modificar))
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(258, Short.MAX_VALUE))
+                .addContainerGap(208, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Modificar producto", jPanel6);
+        jTabbedPane2.addTab("Modificar producto", jPanel6);
 
         jLabel44.setText("Código de producto");
 
@@ -1152,7 +1154,7 @@ public class Principal extends javax.swing.JFrame {
                                         .addComponent(EliminarProducto_CargarDatos))))
                             .addComponent(jLabel50, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(81, 81, 81)))
-                .addContainerGap(427, Short.MAX_VALUE))
+                .addContainerGap(402, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1186,10 +1188,29 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(EliminarProducto_Eliminar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel50, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(236, Short.MAX_VALUE))
+                .addContainerGap(186, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Eliminar producto", jPanel7);
+        jTabbedPane2.addTab("Eliminar producto", jPanel7);
+
+        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
+        jPanel10.setLayout(jPanel10Layout);
+        jPanel10Layout.setHorizontalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jTabbedPane2)
+                .addContainerGap())
+        );
+        jPanel10Layout.setVerticalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jTabbedPane2)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Productos", jPanel10);
 
         jComboBox35.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -1820,6 +1841,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JList jList3;
     private javax.swing.JList jList4;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
@@ -1840,6 +1862,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea2;
