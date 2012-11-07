@@ -7,7 +7,7 @@ package sistemadeinventario;
 import presentacion.Principal;
 
 /**
- *
+ * Clase con el Main del cliente.
  * @author Andres
  */
 public class SistemaDeInventario {

@@ -19,8 +19,9 @@ import javax.swing.JOptionPane;
 import sistemadeinventario.ConectionH;
 
 /**
- * Esta clase es responsable de realizar las consultas de stock y las 
+ * Esta clase es responsable de realizar las consultas de stock y las
  * actualizaciones sobre el mismo
+ *
  * @author Andres
  */
 public class ControladorArticulos {
@@ -40,67 +41,70 @@ public class ControladorArticulos {
      * Metodo responsable de realizar las consultas de stock
      */
     public String[][] consultar(String codigo, String talle, String color, String local, String categoria, String marca, String tela) {
-        String[][] resultado = new String[][]{};
-        Statement stmt = this.c.getStatement();
-        ResultSet rs;
         String consulta = "";
-        String tablas = "articulos, descripciones";
+        String tablas = " articulos AS a , descripciones AS d ";
+        String joins = " a.codigo = d.codigo ";
         // Arma las condiciones de la consulta a partir de los filtros presentes
         if (!codigo.equals("") || !talle.equals("") || !color.equals("") || !local.equals("") || !categoria.equals("") || !marca.equals("") || !tela.equals("")) {
             boolean solo_uno = true;
-            consulta += " AND";
+            String and = " AND";
             if (!codigo.equals("")) {
-                consulta += " articulos.codigo = \"" + codigo + "\"";
+                consulta += " a.codigo = \"" + codigo + "\"";
                 solo_uno = false;
             }
             if (!talle.equals("")) {
+                // max = (a > b) ? a : b;
+                // 
                 if (!solo_uno) {
                     consulta += " AND";
                 }
-                consulta += " articulos.talle = \"" + talle + "\"";
+                consulta += " a.talle = \"" + talle + "\"";
                 solo_uno = false;
             }
             if (!color.equals("")) {
                 if (!solo_uno) {
                     consulta += " AND";
                 }
-                consulta += " articulos.color = \"" + color + "\"";
+                consulta += " a.color = \"" + color + "\"";
                 solo_uno = false;
             }
             if (!local.equals("")) {
                 if (!solo_uno) {
                     consulta += " AND";
                 }
-                consulta += " articulos.local = \"" + local + "\"";
+                consulta += " a.local = \"" + local + "\"";
                 solo_uno = false;
             }
             if (!categoria.equals("")) {
                 if (!solo_uno) {
                     consulta += " AND";
                 }
-                consulta += " descripciones.categoria = \"" + categoria + "\"";
+                consulta += " d.categoria = \"" + categoria + "\"";
                 solo_uno = false;
             }
             if (!marca.equals("")) {
                 if (!solo_uno) {
                     consulta += " AND";
                 }
-                consulta += " descripciones.marca = \"" + marca + "\"";
+                consulta += " d.marca = \"" + marca + "\"";
                 solo_uno = false;
             }
             if (!tela.equals("")) {
-                tablas += ", composiciones";
-                consulta = " AND articulos.codigo = composiciones.codigo" + consulta;
+                tablas += ", composiciones AS c";
+                joins += " AND a.codigo = c.codigo ";
                 if (!solo_uno) {
                     consulta += " AND";
                 }
-                consulta += " composiciones.component = \"" + tela + "\"";
+                consulta += " c.component = \"" + tela + "\"";
             }
         }
+        String[][] resultado = new String[][]{};
+        Statement stmt = this.c.getStatement();
+        ResultSet rs;
         try {
             // Completa la consulta con las tablas, reuniones y condiciones
-            consulta = " WHERE articulos.codigo = descripciones.codigo" + consulta;
-            consulta = "SELECT DISTINCT articulos.codigo, articulos.talle, articulos.color, articulos.local, articulos.stock FROM " + tablas + consulta;
+            consulta = "SELECT DISTINCT a.codigo, a.talle, a.color, a.local, a.stock "
+                    + "FROM " + tablas + " WHERE " + joins + ((consulta.equals("")) ? "" : " AND ") + consulta;
             rs = stmt.executeQuery(consulta);
             // Crea la estructura a retornar a partir de la cantidad de resultados de la consulta
             rs.last();
@@ -151,6 +155,9 @@ public class ControladorArticulos {
         return resultado;
     }
 
+    /*
+     * 
+     */
     public boolean actualizarStock(String codigo, String talle, String color, String local, int cantidad) {
         Statement stmt = this.c.getStatement();
         ResultSet rs;
@@ -208,19 +215,11 @@ public class ControladorArticulos {
                             + "('" + linea[0] + "', '" + linea[1] + "', '" + linea[2] + "', '" + linea[3] + "', '0')");
                 }
                 // Aumenta o reduce el stock del articulo
-                if (aumentar) {
-                    update = "UPDATE articulos SET stock = stock + " + linea[4]
-                            + " WHERE codigo = '" + linea[0]
-                            + "' AND talle = '" + linea[1]
-                            + "' AND color = '" + linea[2]
-                            + "' AND local = '" + linea[3] + "'";
-                } else {
-                    update = "UPDATE articulos SET stock = stock - " + linea[4]
-                            + " WHERE codigo = '" + linea[0]
-                            + "' AND talle = '" + linea[1]
-                            + "' AND color = '" + linea[2]
-                            + "' AND local = '" + linea[3] + "'";
-                }
+                update = "UPDATE articulos SET stock = stock " + ((aumentar) ? "+ " : "- ") + linea[4]
+                        + " WHERE codigo = '" + linea[0]
+                        + "' AND talle = '" + linea[1]
+                        + "' AND color = '" + linea[2]
+                        + "' AND local = '" + linea[3] + "'";
                 stmt.executeUpdate(update);
                 linea[5] = "OK";
             } catch (SQLException ex) {
@@ -275,7 +274,7 @@ public class ControladorArticulos {
         String[] linea;
         for (int i = 0; i < csv.size(); i++) {
             linea = csv.get(i);
-            if(!this.caracteristicas.existeElementoCaracteristica(linea[0], "descripciones")){
+            if (!this.caracteristicas.existeElementoCaracteristica(linea[0], "descripciones")) {
                 // Si no existe el código del producto
                 return false;
             }
