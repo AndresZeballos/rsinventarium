@@ -16,6 +16,7 @@ import javax.swing.JTextField;
 import javax.swing.ListModel;
 import logica.ControladorArticulos;
 import logica.ControladorCaracteristicas;
+import logica.ControladorEtiquetas;
 import logica.ControladorPrecios;
 import logica.ControladorProductos;
 
@@ -93,7 +94,7 @@ public class Principal extends javax.swing.JFrame {
         cargarCombo("descripciones", this.jComboBox35);
         cargarCombo("talles", this.jComboBox36);
 
-        // Modificaciines para AB generico
+        // Modificaciones para AB generico
 
         // Colores es el primer elemento del combo 38
         cargarCombo("colores", this.jComboBox39);
@@ -104,6 +105,13 @@ public class Principal extends javax.swing.JFrame {
         cargarCombo("marcas", this.jComboBox40);
         cargarCombo("categorias", this.jComboBox41);
         cargarList("componentes", this.jList4, this.jTextArea4, text);
+
+        // Modificaciones para las etiquetas
+
+        cargarCombo("descripciones", this.jComboBox43);
+        cargarCombo("talles", this.jComboBox44);
+        cargarCombo("colores", this.jComboBox45);
+
     }
 
     /*
@@ -319,6 +327,18 @@ public class Principal extends javax.swing.JFrame {
         jComboBox38 = new javax.swing.JComboBox();
         jLabel59 = new javax.swing.JLabel();
         jComboBox39 = new javax.swing.JComboBox();
+        jPanel17 = new javax.swing.JPanel();
+        jFileChooser3 = new javax.swing.JFileChooser();
+        jLabel67 = new javax.swing.JLabel();
+        jTextField17 = new javax.swing.JTextField();
+        jComboBox43 = new javax.swing.JComboBox();
+        jComboBox44 = new javax.swing.JComboBox();
+        jLabel68 = new javax.swing.JLabel();
+        jLabel69 = new javax.swing.JLabel();
+        jComboBox45 = new javax.swing.JComboBox();
+        jLabel70 = new javax.swing.JLabel();
+        jTextField18 = new javax.swing.JTextField();
+        jLabel71 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sistema de inventario");
@@ -1378,6 +1398,94 @@ public class Principal extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Altas/Bajas", jPanel14);
 
+        jFileChooser3.setDialogType(javax.swing.JFileChooser.SAVE_DIALOG);
+        jFileChooser3.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jFileChooser3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jFileChooser3ActionPerformed(evt);
+            }
+        });
+
+        jLabel67.setText("Código de producto");
+
+        jComboBox43.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox43ItemStateChanged(evt);
+            }
+        });
+
+        jComboBox44.setModel(new javax.swing.DefaultComboBoxModel(new String[] { }));
+
+        jLabel68.setText("Talle");
+
+        jLabel69.setText("Color");
+
+        jComboBox45.setModel(new javax.swing.DefaultComboBoxModel(new String[] {  }));
+
+        jLabel70.setText("Cantidad");
+
+        jLabel71.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+
+        javax.swing.GroupLayout jPanel17Layout = new javax.swing.GroupLayout(jPanel17);
+        jPanel17.setLayout(jPanel17Layout);
+        jPanel17Layout.setHorizontalGroup(
+            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel17Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jFileChooser3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel17Layout.createSequentialGroup()
+                        .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel67)
+                            .addComponent(jLabel68)
+                            .addComponent(jLabel69)
+                            .addComponent(jLabel70))
+                        .addGap(10, 10, 10)
+                        .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jComboBox45, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jComboBox44, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel17Layout.createSequentialGroup()
+                                .addComponent(jTextField17, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jComboBox43, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel17Layout.createSequentialGroup()
+                                .addComponent(jTextField18, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel71, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                .addContainerGap(431, Short.MAX_VALUE))
+        );
+        jPanel17Layout.setVerticalGroup(
+            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel17Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel67)
+                    .addComponent(jTextField17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBox43, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel68)
+                    .addComponent(jComboBox44, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel69)
+                    .addComponent(jComboBox45, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel17Layout.createSequentialGroup()
+                        .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel70)
+                            .addComponent(jTextField18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jFileChooser3, javax.swing.GroupLayout.DEFAULT_SIZE, 402, Short.MAX_VALUE))
+                    .addGroup(jPanel17Layout.createSequentialGroup()
+                        .addComponent(jLabel71, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Etiquetas", jPanel17);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -1502,6 +1610,11 @@ public class Principal extends javax.swing.JFrame {
         String codigo = this.jTextField4.getText();
         if (codigo.equals("")) {
             this.jLabel36.setText("No ingreso el codigo del producto");
+            return;
+        }
+        // Modificación para código de barras
+        if (codigo.length() != 5) {
+            this.jLabel36.setText("El codigo del producto es invalido");
             return;
         }
         if (this.caracteristicas.existeElementoCaracteristica(codigo, "descripciones")) {
@@ -1707,6 +1820,43 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_AltasBajas_EliminarActionPerformed
 
+    private void jComboBox43ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox43ItemStateChanged
+        this.jTextField17.setText(this.jComboBox43.getSelectedItem().toString());
+    }//GEN-LAST:event_jComboBox43ItemStateChanged
+
+    private void jFileChooser3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFileChooser3ActionPerformed
+        this.jLabel71.setText("");
+        String codigo = this.jTextField17.getText();
+        if (!this.caracteristicas.existeElementoCaracteristica(codigo, "descripciones")) {
+            this.jLabel71.setText("No existe el codigo del producto");
+            return;
+        }
+        String talle = this.jComboBox44.getSelectedItem().toString();
+        if (talle.equals("")) {
+            this.jLabel71.setText("No ingreso el talle");
+            return;
+        }
+        String color = this.jComboBox45.getSelectedItem().toString();
+        if (color.equals("")) {
+            this.jLabel71.setText("No ingreso el color");
+            return;
+        }
+        String precio = this.precios.cargar(codigo, talle);
+        int cantidad;
+        try {
+            cantidad = Integer.parseInt(this.jTextField18.getText());
+        } catch (NumberFormatException nfe) {
+            this.jLabel71.setText("La cantidad debe ser un número");
+            return;
+        }
+        String descripcion = this.productos.cargarDatos(codigo).get("descripcion");
+        
+        String archivo = this.jFileChooser3.getSelectedFile().getPath();
+        System.out.println(archivo);
+        ControladorEtiquetas.imprimir(archivo, codigo, descripcion, precio, talle, color, cantidad);
+        this.jLabel71.setText("El archivo fue creado correctamente");
+    }//GEN-LAST:event_jFileChooser3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1778,6 +1928,9 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JComboBox jComboBox40;
     private javax.swing.JComboBox jComboBox41;
     private javax.swing.JComboBox jComboBox42;
+    private javax.swing.JComboBox jComboBox43;
+    private javax.swing.JComboBox jComboBox44;
+    private javax.swing.JComboBox jComboBox45;
     private javax.swing.JComboBox jComboBox5;
     private javax.swing.JComboBox jComboBox6;
     private javax.swing.JComboBox jComboBox7;
@@ -1785,6 +1938,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JComboBox jComboBox9;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JFileChooser jFileChooser2;
+    private javax.swing.JFileChooser jFileChooser3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1833,7 +1987,12 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel64;
     private javax.swing.JLabel jLabel65;
     private javax.swing.JLabel jLabel66;
+    private javax.swing.JLabel jLabel67;
+    private javax.swing.JLabel jLabel68;
+    private javax.swing.JLabel jLabel69;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel70;
+    private javax.swing.JLabel jLabel71;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JList jList1;
@@ -1848,6 +2007,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel16;
+    private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -1876,6 +2036,8 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField14;
     private javax.swing.JTextField jTextField15;
     private javax.swing.JTextField jTextField16;
+    private javax.swing.JTextField jTextField17;
+    private javax.swing.JTextField jTextField18;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
