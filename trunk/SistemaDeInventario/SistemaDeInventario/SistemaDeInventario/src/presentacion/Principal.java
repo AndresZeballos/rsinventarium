@@ -50,17 +50,18 @@ public class Principal extends javax.swing.JFrame {
         }
     }
 
-    /*
+    /**
      * Retorna el resultado de la inicialización.
      */
     public boolean getOk() {
         return this.caracteristicas.getOk() && this.caracteristicas.getMsg().equals("");
     }
 
-    /*
-     * Carga los elementos de las pantallas.
+    /**
+     * Carga los elementos de las pantallas. Si total es verdadero, blanquea los
+     * campos de texto; De lo contrario, mantiene su contenido.
      */
-    private void cargarPantallas(boolean text) {
+    private void cargarPantallas(boolean total) {
         cargarCombo("descripciones", this.jComboBox1);
         cargarCombo("talles", this.jComboBox2);
         cargarCombo("colores", this.jComboBox3);
@@ -73,17 +74,17 @@ public class Principal extends javax.swing.JFrame {
 
         cargarCombo("marcas", this.jComboBox9);
         cargarCombo("categorias", this.jComboBox10);
-        cargarList("componentes", this.jList1, this.jTextArea1, text);
+        cargarList("componentes", this.jList1, this.jTextArea1, total);
 
         cargarCombo("descripciones", this.jComboBox28);
         cargarCombo("marcas", this.jComboBox26);
         cargarCombo("categorias", this.jComboBox27);
-        cargarList("componentes", this.jList2, this.jTextArea2, text);
+        cargarList("componentes", this.jList2, this.jTextArea2, total);
 
         cargarCombo("descripciones", this.jComboBox29);
         cargarCombo("marcas", this.jComboBox30);
         cargarCombo("categorias", this.jComboBox31);
-        cargarList("componentes", this.jList3, this.jTextArea3, text);
+        cargarList("componentes", this.jList3, this.jTextArea3, total);
 
         // Modificaciones en la pantalla de consultar
         cargarCombo("categorias", this.jComboBox32);
@@ -97,14 +98,14 @@ public class Principal extends javax.swing.JFrame {
         // Modificaciones para AB generico
 
         // Colores es el primer elemento del combo 38
-        cargarCombo("colores", this.jComboBox39);
+        cargarCombo(this.jComboBox38.getSelectedItem().toString().toLowerCase(), this.jComboBox39);
 
         // Modificaciones para el Ver de producto
 
         cargarCombo("descripciones", this.jComboBox42);
         cargarCombo("marcas", this.jComboBox40);
         cargarCombo("categorias", this.jComboBox41);
-        cargarList("componentes", this.jList4, this.jTextArea4, text);
+        cargarList("componentes", this.jList4, this.jTextArea4, total);
 
         // Modificaciones para las etiquetas
 
@@ -114,7 +115,7 @@ public class Principal extends javax.swing.JFrame {
 
     }
 
-    /*
+    /**
      * Carga el combo indicado con los datos de la tabla.
      */
     private void cargarCombo(String tabla, JComboBox comboBox) {
@@ -134,7 +135,7 @@ public class Principal extends javax.swing.JFrame {
         }
     }
 
-    /*
+    /**
      * Carga los list y textarea indicados con los datos de la tabla.
      */
     private void cargarList(String tabla, JList list, JTextArea area, boolean borrar_text) {
@@ -152,7 +153,7 @@ public class Principal extends javax.swing.JFrame {
         list.setModel(model);
     }
 
-    /*
+    /**
      * Carga los elementos de la pantalla con los datos del producto.
      */
     private void cargarProducto(String codigo, JComboBox marca, JComboBox categoria, JTextField descripcion, JTextArea porcentajes, JList lista) {
@@ -1771,8 +1772,9 @@ public class Principal extends javax.swing.JFrame {
             this.jLabel57.setText("No ingreso el talle");
             return;
         }
-        this.precios.modificar(codigo, talle, this.jTextField13.getText());
-        this.jLabel57.setText("Datos modificados");
+        if (this.precios.modificar(codigo, talle, this.jTextField13.getText())) {
+            this.jLabel57.setText("Datos modificados");
+        }
     }//GEN-LAST:event_Precios_ModificarActionPerformed
 
     private void VerProducto_CargarDatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VerProducto_CargarDatosActionPerformed
@@ -1844,6 +1846,10 @@ public class Principal extends javax.swing.JFrame {
             return;
         }
         String precio = this.precios.cargar(codigo, talle);
+        if (precio.equals("")) {
+            this.jLabel71.setText("El producto y talle no tienen precio");
+            return;
+        }
         int cantidad;
         try {
             cantidad = Integer.parseInt(this.jTextField18.getText());
@@ -1852,9 +1858,8 @@ public class Principal extends javax.swing.JFrame {
             return;
         }
         String descripcion = this.productos.cargarDatos(codigo).get("descripcion");
-        
+
         String archivo = this.jFileChooser3.getSelectedFile().getPath();
-        System.out.println(archivo);
         ControladorEtiquetas.imprimir(archivo, codigo, descripcion, precio, talle, color, cantidad);
         this.jLabel71.setText("El archivo fue creado correctamente");
     }//GEN-LAST:event_jFileChooser3ActionPerformed

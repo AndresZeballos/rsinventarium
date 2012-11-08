@@ -48,7 +48,7 @@ public class ControladorCaracteristicas {
         validarMantenimiento();
     }
 
-    /*
+    /**
      * Carga a memoria el contenido de las tablas de la base de datos
      * de las caracteriasticas.
      */
@@ -109,7 +109,7 @@ public class ControladorCaracteristicas {
         }
     }
 
-    /*
+    /**
      * Valida que el mantenimiento haya sido realizado.
      */
     public void validarMantenimiento() {
@@ -136,7 +136,7 @@ public class ControladorCaracteristicas {
         return this.msg;
     }
 
-    /*
+    /**
      * Retorna el contenido de la tabla (caracteristica) con el
      * nombre pasado por parametro.
      */
@@ -188,7 +188,7 @@ public class ControladorCaracteristicas {
         return this.caracteristicas.get(caracteristica);
     }
 
-    /*
+    /**
      * Retorna verdadero si existe el elemento en la caracteristica.
      */
     public boolean existeElementoCaracteristica(String elemento, String caracteristica) {
@@ -196,7 +196,7 @@ public class ControladorCaracteristicas {
         return a.contains(elemento);
     }
 
-    /*
+    /**
      * Inserta el elemento en la tabla y retorna el resultado de la operación.
      */
     public boolean crear(String tabla, String elemento) {
@@ -212,7 +212,7 @@ public class ControladorCaracteristicas {
         return true;
     }
 
-    /*
+    /**
      * Elimina el elemento de la tabla y retorna el resultado de la operación.
      */
     public boolean eliminar(String tabla, String elemento) {
