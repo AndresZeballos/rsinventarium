@@ -82,7 +82,7 @@ public class ControladorEtiquetas {
         FileWriter fichero = null;
         PrintWriter pw;
         try {
-            fichero = new FileWriter("c:/prueba.txt");
+            fichero = new FileWriter(archivo);
             pw = new PrintWriter(fichero);
 
             for (int i = 0; i < resultado.size(); i++) {
