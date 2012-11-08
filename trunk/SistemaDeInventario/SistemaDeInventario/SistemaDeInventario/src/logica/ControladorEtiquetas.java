@@ -14,11 +14,16 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
- *
+ * Esta clase contiene la lógica de generación de archivos de etiquetas
+ * para su impresión en la impresora deseada.
  * @author Andres
  */
 public class ControladorEtiquetas {
 
+    /**
+     * Levanta el template de etiquetas, lo procesa remplazando los campos con los 
+     * datos pasados por parametro y lo guarda en archivo.
+     */
     public static boolean imprimir(String archivo, String codigo, String descripcion, String precio, String talle, String color, int cantidad) {
         ArrayList<String> resultado = new ArrayList<String>();
 
