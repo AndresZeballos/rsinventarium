@@ -1860,8 +1860,9 @@ public class Principal extends javax.swing.JFrame {
         String descripcion = this.productos.cargarDatos(codigo).get("descripcion");
 
         String archivo = this.jFileChooser3.getSelectedFile().getPath();
-        ControladorEtiquetas.imprimir(archivo, codigo, descripcion, precio, talle, color, cantidad);
-        this.jLabel71.setText("El archivo fue creado correctamente");
+        if (ControladorEtiquetas.imprimir(archivo, codigo, descripcion, precio, talle, color, cantidad)) {
+            this.jLabel71.setText("El archivo fue creado correctamente");
+        }
     }//GEN-LAST:event_jFileChooser3ActionPerformed
 
     /**
