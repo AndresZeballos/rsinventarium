@@ -11,6 +11,7 @@ import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -37,36 +38,38 @@ public class ControladorEtiquetas {
             // Cerramos el archivo
             entrada.close();
         } catch (Exception e) { //Catch de excepciones
+            JOptionPane.showConfirmDialog(null, "Ocurrió un problema de lectura.", "Error!", JOptionPane.CLOSED_OPTION, JOptionPane.ERROR_MESSAGE);
+            return false;
         }
 
         // Formateo de los datos
         // Formateo de la barra
         String barra = codigo + talle;
-        while(barra.length() < 8) {
+        while (barra.length() < 8) {
             barra += " ";
         }
         barra += color;
-        while(barra.length() < 13) {
+        while (barra.length() < 13) {
             barra += " ";
         }
         // Formateo de la descripción
         String desc1 = "";
         String desc2 = "";
-        if(descripcion.length() > 35){
+        if (descripcion.length() > 35) {
             String[] palabras = descripcion.split(" ");
             int i = 0;
-            while(i < palabras.length && desc1.length() + palabras[i].length() < 35){
+            while (i < palabras.length && desc1.length() + palabras[i].length() < 35) {
                 desc1 += palabras[i] + " ";
                 i++;
             }
-            while(i < palabras.length && desc2.length() + palabras[i].length() < 35){
+            while (i < palabras.length && desc2.length() + palabras[i].length() < 35) {
                 desc2 += palabras[i] + " ";
                 i++;
             }
         } else {
             desc1 = descripcion;
         }
-        
+
         // Formateo de la salida
         String aux;
         for (int i = 0; i < resultado.size(); i++) {
@@ -92,16 +95,18 @@ public class ControladorEtiquetas {
             fichero.close();
 
         } catch (Exception e) {
-            System.out.println("FUUUUU");
+            JOptionPane.showConfirmDialog(null, "Ocurrió un problema de escritura.", "Error!", JOptionPane.CLOSED_OPTION, JOptionPane.ERROR_MESSAGE);
+            return false;
         } finally {
             try {
                 // Nuevamente aprovechamos el finally para 
                 // asegurarnos que se cierra el fichero.
-                if (null != fichero) {
+                if (fichero != null) {
                     fichero.close();
                 }
             } catch (Exception e2) {
-                System.out.println("FUUUUU");
+                JOptionPane.showConfirmDialog(null, "Ocurrió un problema de cierre del archivo.", "Error!", JOptionPane.CLOSED_OPTION, JOptionPane.ERROR_MESSAGE);
+                return false;
             }
         }
         return true;
