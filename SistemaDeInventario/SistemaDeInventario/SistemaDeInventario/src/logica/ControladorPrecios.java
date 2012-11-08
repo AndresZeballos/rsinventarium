@@ -25,7 +25,7 @@ public class ControladorPrecios {
         this.c = new ConectionH();
     }
 
-    /*
+    /**
      * Retorna el precio almacenado en la base de datos a partir del
      * codigo y talle del articulo
      */
@@ -37,10 +37,7 @@ public class ControladorPrecios {
                     + " WHERE codigo = '" + codigo + "' AND talle = '" + talle + "'";
             ResultSet rs = stmt.executeQuery(select);
             rs.last();
-            if (rs.getRow() == 0) {
-                stmt.executeUpdate("INSERT INTO precios (codigo, talle, precio) VALUES "
-                        + "('" + codigo + "', '" + talle + "', '" + precio + "')");
-            } else {
+            if (rs.getRow() != 0) {
                 rs.first();
                 precio = rs.getString("precio");
             }
@@ -50,7 +47,7 @@ public class ControladorPrecios {
         return precio;
     }
 
-    /*
+    /**
      * Modifica el precio almacenado en la base de datos a partir del
      * codigo y talle del articulo
      */
@@ -70,6 +67,7 @@ public class ControladorPrecios {
             stmt.executeUpdate(update);
         } catch (SQLException ex) {
             JOptionPane.showConfirmDialog(null, "Ocurrió un problema al modificar el precio.", "Error!", JOptionPane.CLOSED_OPTION, JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         return true;
     }

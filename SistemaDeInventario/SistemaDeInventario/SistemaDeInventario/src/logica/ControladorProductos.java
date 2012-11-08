@@ -26,7 +26,7 @@ public class ControladorProductos {
         this.c = new ConectionH();
     }
 
-    /*
+    /**
      * Crea el priducto con los datos pasados por parametro y retorna
      * el resultado de la operación
      */
@@ -52,7 +52,7 @@ public class ControladorProductos {
         return true;
     }
 
-    /*
+    /**
      * Retorna un diccionario con los datos del producto (marca, categoria y descripcion)
      */
     public Hashtable<String, String> cargarDatos(String codigo) {
@@ -73,7 +73,7 @@ public class ControladorProductos {
         return datos;
     }
 
-    /*
+    /**
      * Carga un diccionario con los pares componente - porcentaje
      * correspondiente a la composición del producto
      */
@@ -94,7 +94,7 @@ public class ControladorProductos {
         return componentes;
     }
 
-    /*
+    /**
      * Modifica los datos del producto a partir de los parametros
      */
     public boolean modificar(String codigo, String marca, String categoria, String descripcion, Hashtable<String, String> componentes) {
@@ -137,7 +137,7 @@ public class ControladorProductos {
         return true;
     }
 
-    /*
+    /**
      * Elimina el producto en base a su codigo
      */
     public boolean eliminar(String codigo) {

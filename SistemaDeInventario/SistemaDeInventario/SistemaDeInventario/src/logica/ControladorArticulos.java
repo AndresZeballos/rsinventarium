@@ -37,7 +37,7 @@ public class ControladorArticulos {
         this.c = new ConectionH();
     }
 
-    /*
+    /**
      * Metodo responsable de realizar las consultas de stock
      */
     public String[][] consultar(String codigo, String talle, String color, String local, String categoria, String marca, String tela) {
@@ -104,7 +104,7 @@ public class ControladorArticulos {
         try {
             // Completa la consulta con las tablas, reuniones y condiciones
             consulta = "SELECT DISTINCT a.codigo, a.talle, a.color, a.local, a.stock "
-                    + "FROM " + tablas + " WHERE " + joins + ((consulta.equals("")) ? "" : " AND ") + consulta;
+                    + "FROM " + tablas + " WHERE " + joins + ((consulta.equals("")) ? "" : " AND ") + consulta + " ORDER BY a.codigo";
             rs = stmt.executeQuery(consulta);
             // Crea la estructura a retornar a partir de la cantidad de resultados de la consulta
             rs.last();
@@ -155,7 +155,7 @@ public class ControladorArticulos {
         return resultado;
     }
 
-    /*
+    /**
      * 
      */
     public boolean actualizarStock(String codigo, String talle, String color, String local, int cantidad) {
@@ -182,7 +182,7 @@ public class ControladorArticulos {
         return true;
     }
 
-    /*
+    /**
      * Procesa el archivo aumentando o reduciendo el stock dependiendo
      * del parametro aumentar.
      */
@@ -232,7 +232,7 @@ public class ControladorArticulos {
         return true;
     }
 
-    /*
+    /**
      * Abre el archivo pasado por parametro y lee su contenido
      * almacenandolo en memoria para procesarlo.
      */
@@ -266,7 +266,7 @@ public class ControladorArticulos {
         return resultado;
     }
 
-    /*
+    /**
      * Valida que los códigos de todos los artículos a ingresar 
      * esten dados de alta en el sistema.
      */
@@ -282,7 +282,7 @@ public class ControladorArticulos {
         return true;
     }
 
-    /*
+    /**
      * Luego de procesar el CSV, se guarda su información agregando el
      * resultado en cada fila ("OK" o "NO")
      */
