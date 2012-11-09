@@ -81,8 +81,9 @@ public class ControladorEtiquetas {
             aux = resultado.get(i);
             aux = aux.replace("<desc1>", desc1);
             aux = aux.replace("<desc2>", desc2);
-            aux = aux.replace("<barra>", barra);
+            aux = aux.replace("<talle>", talle);
             aux = aux.replace("<precio>", precio);
+            aux = aux.replace("<barra>", barra);
             aux = aux.replace("<cant>", "" + cantidad);
             resultado.set(i, aux);
         }
