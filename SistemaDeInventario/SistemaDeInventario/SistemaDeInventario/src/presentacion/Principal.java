@@ -1644,7 +1644,15 @@ public class Principal extends javax.swing.JFrame {
                 componentes.put(model.getElementAt(i).toString(), porcentajes[i]);
             }
         }
-        if (this.productos.crear(codigo, marca, categoria, this.jTextField5.getText(), componentes)) {
+        
+        // Modificación para etiquetas
+        String descripcion = this.jTextField5.getText();
+        if (descripcion.length() > 60) {
+            this.jLabel36.setText("La descrición es demasiado larga");
+            return;
+        }
+        
+        if (this.productos.crear(codigo, marca, categoria, descripcion, componentes)) {
             this.jLabel35.setText("");
             this.jLabel36.setText("Se creó el producto");
             cargarPantallas(false);
@@ -1704,7 +1712,15 @@ public class Principal extends javax.swing.JFrame {
             }
             componentes.put(model.getElementAt(i).toString(), porcentajes[i]);
         }
-        if (this.productos.modificar(codigo, marca, categoria, this.jTextField9.getText(), componentes)) {
+        
+        // Modificación para etiquetas
+        String descripcion = this.jTextField9.getText();
+        if (descripcion.length() > 60) {
+            this.jLabel39.setText("La descrición es demasiado larga");
+            return;
+        }
+        
+        if (this.productos.modificar(codigo, marca, categoria, descripcion, componentes)) {
             this.jLabel39.setText("Se modificó el producto");
             this.jLabel43.setText("");
         } else {
@@ -1794,9 +1810,16 @@ public class Principal extends javax.swing.JFrame {
     private void AltasBajas_CrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AltasBajas_CrearActionPerformed
         String tabla = this.jComboBox37.getSelectedItem().toString().toLowerCase();
         String elemento = this.jTextField14.getText();
+        
+        // Modificación para etiquetas
+        if(tabla.equals("colores") && elemento.length() > 5){
+            JOptionPane.showConfirmDialog(null, "No se pueden crear colores con más de 5 letras", "Atención", JOptionPane.CLOSED_OPTION, JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
         boolean res = this.caracteristicas.crear(tabla, elemento);
         if (!res) {
-            JOptionPane.showConfirmDialog(null, this.caracteristicas.getMsg(), "Error Fatal!!!", JOptionPane.CLOSED_OPTION, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showConfirmDialog(null, this.caracteristicas.getMsg(), "Error!!!", JOptionPane.CLOSED_OPTION, JOptionPane.ERROR_MESSAGE);
         } else {
             this.caracteristicas.initCaracteristicas();
             cargarPantallas(false);
@@ -1817,7 +1840,7 @@ public class Principal extends javax.swing.JFrame {
         String elemento = this.jComboBox39.getSelectedItem().toString();
         boolean res = this.caracteristicas.eliminar(tabla, elemento);
         if (!res) {
-            JOptionPane.showConfirmDialog(null, this.caracteristicas.getMsg(), "Error Fatal!!!", JOptionPane.CLOSED_OPTION, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showConfirmDialog(null, this.caracteristicas.getMsg(), "Error!!!", JOptionPane.CLOSED_OPTION, JOptionPane.ERROR_MESSAGE);
         } else {
             this.caracteristicas.initCaracteristicas();
             cargarPantallas(false);

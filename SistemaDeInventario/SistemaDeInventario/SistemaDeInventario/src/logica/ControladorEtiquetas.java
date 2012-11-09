@@ -60,14 +60,14 @@ public class ControladorEtiquetas {
         // Formateo de la descripción
         String desc1 = "";
         String desc2 = "";
-        if (descripcion.length() > 35) {
+        if (descripcion.length() > 30) {
             String[] palabras = descripcion.split(" ");
             int i = 0;
-            while (i < palabras.length && desc1.length() + palabras[i].length() < 35) {
+            while (i < palabras.length && desc1.length() + palabras[i].length() < 30) {
                 desc1 += palabras[i] + " ";
                 i++;
             }
-            while (i < palabras.length && desc2.length() + palabras[i].length() < 35) {
+            while (i < palabras.length && desc2.length() + palabras[i].length() < 30) {
                 desc2 += palabras[i] + " ";
                 i++;
             }
