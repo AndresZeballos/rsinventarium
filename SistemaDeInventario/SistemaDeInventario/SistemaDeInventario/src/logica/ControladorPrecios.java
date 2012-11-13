@@ -17,11 +17,9 @@ import sistemadeinventario.ConectionH;
  */
 public class ControladorPrecios {
 
-    private ControladorCaracteristicas caracteristicas;
     private ConectionH c;
 
-    public ControladorPrecios(ControladorCaracteristicas caracteristicas) {
-        this.caracteristicas = caracteristicas;
+    public ControladorPrecios() {
         this.c = new ConectionH();
     }
 
