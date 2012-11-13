@@ -26,8 +26,8 @@ public class ControladorCostos {
         Statement stmt = this.c.getStatement();
         String[] costos = new String[3];
         try {
-            String select = "SELECT origen, costo_entrada, costo_compra  FROM costos "
-                    + " WHERE codigo = '" + codigo + "' AND talle = '" + talle + "'";
+            String select = "SELECT origen, costo_entrada, costo_compra FROM costos"
+                    + " WHERE codigo='" + codigo + "' AND talle='" + talle + "';";
             ResultSet rs = stmt.executeQuery(select);
             rs.last();
             if (rs.getRow() != 0) {
@@ -45,7 +45,7 @@ public class ControladorCostos {
     public boolean modificar(String codigo, String talle, String origen, String costoEntrada, String costoCompra) {
         Statement stmt = this.c.getStatement();
         String update = "UPDATE costos "
-                + "SET origen='" + origen + "', costo_entrada='" + costoEntrada + "', costo_compra='" + costoCompra +"'"
+                + "SET origen='" + origen + "', costo_entrada='" + costoEntrada + "', costo_compra='" + costoCompra + "'"
                 + " WHERE codigo='" + codigo + "' AND talle='" + talle + "'";
         try {
             String select = "SELECT * FROM costos "
