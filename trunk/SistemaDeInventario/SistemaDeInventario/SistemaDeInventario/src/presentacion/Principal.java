@@ -12,10 +12,12 @@ import javax.swing.DefaultListModel;
 import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListModel;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 import javax.swing.table.TableRowSorter;
 import logica.ControladorArticulos;
 import logica.ControladorCaracteristicas;
@@ -403,7 +405,7 @@ public class Principal extends javax.swing.JFrame {
                 {null, null, null, null, null}
             },
             new String [] {
-                "Código", "Talle", "Color", "Lugar" , "Stock"
+                "Código", "Descripción", "Talle", "Color", "Lugar" , "Stock"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -1607,7 +1609,7 @@ public class Principal extends javax.swing.JFrame {
                 this.jComboBox33.getSelectedItem().toString(),
                 this.jComboBox34.getSelectedItem().toString()),
                 new String[]{
-                    "Código", "Talle", "Color", "Lugar", "Stock"
+                    "Código", "Descripción", "Talle", "Color", "Lugar", "Stock"
                 });
         this.jTable1.setModel(modelo);
         TableRowSorter rs = new TableRowSorter<DefaultTableModel>(modelo);
@@ -1624,7 +1626,8 @@ public class Principal extends javax.swing.JFrame {
             }
         };
         rs.setComparator(0, comparador_asterisco);
-        rs.setComparator(1, new Comparator<String>() {
+        rs.setComparator(1, comparador_asterisco);
+        rs.setComparator(2, new Comparator<String>() {
             @Override
             public int compare(String o1, String o2) {
                 List<String> l = caracteristicas.getCaracteristica("talles");
@@ -1639,9 +1642,9 @@ public class Principal extends javax.swing.JFrame {
                 return io1 - io2;
             }
         });
-        rs.setComparator(2, comparador_asterisco);
         rs.setComparator(3, comparador_asterisco);
-        rs.setComparator(4, new Comparator<String>() {
+        rs.setComparator(4, comparador_asterisco);
+        rs.setComparator(5, new Comparator<String>() {
             @Override
             public int compare(String o1, String o2) {
                 int io1 = Integer.parseInt(o1);
@@ -1650,8 +1653,15 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         this.jTable1.setRowSorter(rs);
-        this.jTable1.getRowSorter().toggleSortOrder(1);
+        this.jTable1.getRowSorter().toggleSortOrder(2);
         this.jTable1.getRowSorter().toggleSortOrder(0);
+        this.jTable1.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        for (int i = 0; i < modelo.getColumnCount(); i++) {
+            TableColumn column = this.jTable1.getColumnModel().getColumn(i);
+            column.setPreferredWidth(100);
+        }
+        this.jTable1.getColumnModel().getColumn(4).setPreferredWidth(125);
+        this.jTable1.getColumnModel().getColumn(1).setPreferredWidth(423);
     }//GEN-LAST:event_ConsultarStock_ConsultarActionPerformed
 
     private void IngresarArticulos_IngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IngresarArticulos_IngresarActionPerformed

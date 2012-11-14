@@ -103,26 +103,27 @@ public class ControladorArticulos {
         ResultSet rs;
         try {
             // Completa la consulta con las tablas, reuniones y condiciones
-            consulta = "SELECT DISTINCT a.codigo, a.talle, a.color, a.local, a.stock "
-                    + "FROM " + tablas + " WHERE " + joins + ((consulta.equals("")) ? "" : " AND ") + consulta + " ORDER BY a.codigo";
+            consulta = "SELECT DISTINCT a.codigo, d.descripcion, a.talle, a.color, a.local, a.stock "
+                    + "FROM " + tablas + " WHERE " + joins + ((consulta.equals("")) ? "" : " AND ") + consulta; // + " ORDER BY a.codigo";
             rs = stmt.executeQuery(consulta);
             // Crea la estructura a retornar a partir de la cantidad de resultados de la consulta
             rs.last();
             int rowCount = rs.getRow();
             if (rowCount != 1) {
-                resultado = new String[rowCount + 1][5];
+                resultado = new String[rowCount + 1][6];
             } else {
-                resultado = new String[rowCount][5];
+                resultado = new String[rowCount][6];
             }
             int suma = 0;
             rs.first();
             // Carga los resultados en la estructura
             for (int i = 0; i < rowCount; i++, rs.next()) {
                 resultado[i][0] = rs.getString("codigo");
-                resultado[i][1] = rs.getString("talle");
-                resultado[i][2] = rs.getString("color");
-                resultado[i][3] = rs.getString("local");
-                resultado[i][4] = rs.getString("stock");
+                resultado[i][1] = rs.getString("descripcion");
+                resultado[i][2] = rs.getString("talle");
+                resultado[i][3] = rs.getString("color");
+                resultado[i][4] = rs.getString("local");
+                resultado[i][5] = rs.getString("stock");
                 suma += Integer.parseInt(rs.getString("stock"));
             }
             // Agrega la fila con los datos genericos (*) o concretos y su suma
@@ -132,22 +133,23 @@ public class ControladorArticulos {
                 } else {
                     resultado[rowCount][0] = "*";
                 }
+                resultado[rowCount][1] = "*";
                 if (!talle.equals("")) {
-                    resultado[rowCount][1] = talle;
-                } else {
-                    resultado[rowCount][1] = "*";
-                }
-                if (!color.equals("")) {
-                    resultado[rowCount][2] = color;
+                    resultado[rowCount][2] = talle;
                 } else {
                     resultado[rowCount][2] = "*";
                 }
-                if (!local.equals("")) {
-                    resultado[rowCount][3] = local;
+                if (!color.equals("")) {
+                    resultado[rowCount][3] = color;
                 } else {
                     resultado[rowCount][3] = "*";
                 }
-                resultado[rowCount][4] = String.valueOf(suma);
+                if (!local.equals("")) {
+                    resultado[rowCount][4] = local;
+                } else {
+                    resultado[rowCount][4] = "*";
+                }
+                resultado[rowCount][5] = String.valueOf(suma);
             }
         } catch (SQLException e) {
             JOptionPane.showConfirmDialog(null, "Ocurrió un problema al consultar el stock.", "Error!", JOptionPane.CLOSED_OPTION, JOptionPane.ERROR_MESSAGE);
