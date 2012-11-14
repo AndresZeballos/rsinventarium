@@ -4,6 +4,7 @@
  */
 package presentacion;
 
+import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
@@ -14,6 +15,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListModel;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import logica.ControladorArticulos;
 import logica.ControladorCaracteristicas;
 import logica.ControladorCostos;
@@ -1595,7 +1598,7 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void ConsultarStock_ConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConsultarStock_ConsultarActionPerformed
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        DefaultTableModel modelo = new javax.swing.table.DefaultTableModel(
                 this.articulos.consultar(this.jTextField1.getText(),
                 this.jComboBox2.getSelectedItem().toString(),
                 this.jComboBox3.getSelectedItem().toString(),
@@ -1605,7 +1608,50 @@ public class Principal extends javax.swing.JFrame {
                 this.jComboBox34.getSelectedItem().toString()),
                 new String[]{
                     "Código", "Talle", "Color", "Lugar", "Stock"
-                }));
+                });
+        this.jTable1.setModel(modelo);
+        TableRowSorter rs = new TableRowSorter<DefaultTableModel>(modelo);
+        Comparator comparador_asterisco = new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                if (o1.equals("*")) {
+                    return Integer.MAX_VALUE;
+                }
+                if (o2.equals("*")) {
+                    return Integer.MIN_VALUE;
+                }
+                return o1.compareTo(o2);
+            }
+        };
+        rs.setComparator(0, comparador_asterisco);
+        rs.setComparator(1, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                List<String> l = caracteristicas.getCaracteristica("talles");
+                if (o1.equals("*")) {
+                    return Integer.MAX_VALUE;
+                }
+                if (o2.equals("*")) {
+                    return Integer.MIN_VALUE;
+                }
+                int io1 = l.indexOf(o1);
+                int io2 = l.indexOf(o2);
+                return io1 - io2;
+            }
+        });
+        rs.setComparator(2, comparador_asterisco);
+        rs.setComparator(3, comparador_asterisco);
+        rs.setComparator(4, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                int io1 = Integer.parseInt(o1);
+                int io2 = Integer.parseInt(o2);
+                return io1 - io2;
+            }
+        });
+        this.jTable1.setRowSorter(rs);
+        this.jTable1.getRowSorter().toggleSortOrder(1);
+        this.jTable1.getRowSorter().toggleSortOrder(0);
     }//GEN-LAST:event_ConsultarStock_ConsultarActionPerformed
 
     private void IngresarArticulos_IngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IngresarArticulos_IngresarActionPerformed
@@ -1896,10 +1942,10 @@ public class Principal extends javax.swing.JFrame {
         this.jTextField13.setText(precio);
         this.jLabel57.setText("Datos cargados");
         // Modificación para agregar los costos
-        String[] costos = this.costos.cargar(codigo, talle);
-        this.jTextField19.setText(costos[0]);
-        this.jTextField20.setText(costos[1]);
-        this.jTextField21.setText(costos[2]);
+        String[] costo = this.costos.cargar(codigo, talle);
+        this.jTextField19.setText(costo[0]);
+        this.jTextField20.setText(costo[1]);
+        this.jTextField21.setText(costo[2]);
         this.jLabel75.setText("Datos cargados");
     }//GEN-LAST:event_Precios_CargarDatosActionPerformed
 
