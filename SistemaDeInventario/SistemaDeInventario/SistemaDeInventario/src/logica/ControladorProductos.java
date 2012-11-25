@@ -14,6 +14,7 @@ import sistemadeinventario.ConectionH;
 
 /**
  * Esta clase es la responsable del ABMV de productos
+ *
  * @author Andres
  */
 public class ControladorProductos {
@@ -27,8 +28,8 @@ public class ControladorProductos {
     }
 
     /**
-     * Crea el priducto con los datos pasados por parametro y retorna
-     * el resultado de la operación
+     * Crea el priducto con los datos pasados por parametro y retorna el
+     * resultado de la operación
      */
     public boolean crear(String codigo, String marca, String categoria, String descripcion, Hashtable<String, String> componentes) {
         Statement stmt = this.c.getStatement();
@@ -53,7 +54,8 @@ public class ControladorProductos {
     }
 
     /**
-     * Retorna un diccionario con los datos del producto (marca, categoria y descripcion)
+     * Retorna un diccionario con los datos del producto (marca, categoria y
+     * descripcion)
      */
     public Hashtable<String, String> cargarDatos(String codigo) {
         Hashtable<String, String> datos = new Hashtable<String, String>();
@@ -99,9 +101,9 @@ public class ControladorProductos {
      */
     public boolean modificar(String codigo, String marca, String categoria, String descripcion, Hashtable<String, String> componentes) {
         Statement stmt = this.c.getStatement();
-        String update = "UPDATE descripciones SET marca='" + marca + 
-                "', categoria='" + categoria + 
-                "', descripcion='" + descripcion
+        String update = "UPDATE descripciones SET marca='" + marca
+                + "', categoria='" + categoria
+                + "', descripcion='" + descripcion
                 + "' WHERE codigo='" + codigo + "'";
         try {
             stmt.executeUpdate(update);

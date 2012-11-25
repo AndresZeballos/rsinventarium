@@ -14,13 +14,14 @@ import java.util.List;
 import sistemadeinventario.ConectionH;
 
 /**
- * Esta clase se encarga de controlar las tablas basicas de caracteristicas, 
- * las cuales completan los listados de opciones de las pantallas
- * También es responsable de validar el mantenimiento del sistema
- * Esto se debe a que la tabla de control de mantenimiento tiene la misma
- * estructura básica de las caracteristicas, y por eso se reutiliza esa lógica
- * Es la primer controladora a instanciarse para que realiza la validación
- * al comienzo de la ejecución del programa
+ * Esta clase se encarga de controlar las tablas basicas de caracteristicas, las
+ * cuales completan los listados de opciones de las pantallas También es
+ * responsable de validar el mantenimiento del sistema Esto se debe a que la
+ * tabla de control de mantenimiento tiene la misma estructura básica de las
+ * caracteristicas, y por eso se reutiliza esa lógica Es la primer controladora
+ * a instanciarse para que realiza la validación al comienzo de la ejecución del
+ * programa
+ *
  * @author Andres
  */
 public class ControladorCaracteristicas {
@@ -32,7 +33,6 @@ public class ControladorCaracteristicas {
     // Campos utilizado para informar errores de conectividad y otros errores
     private boolean ok;
     private String msg;
-    
     private ConectionH c;
 
     public ControladorCaracteristicas() {
@@ -49,15 +49,15 @@ public class ControladorCaracteristicas {
     }
 
     /**
-     * Carga a memoria el contenido de las tablas de la base de datos
-     * de las caracteriasticas.
+     * Carga a memoria el contenido de las tablas de la base de datos de las
+     * caracteriasticas.
      */
     public void initCaracteristicas() {
         this.caracteristicas = new Hashtable<String, List>();
         String[] tablas = {
             // Caracteristicas propias de la descripción de los articulos
             // Estas categorias solo agregaban complejidad al sistema
-            // Y aportaban de manera clara un uso o beneficio
+            // Y no aportaban de manera clara un uso o beneficio
             /*
              "pinzas",
              "telas",
@@ -87,15 +87,31 @@ public class ControladorCaracteristicas {
             "descripciones",
             "componentes",
             // Controlador de pago de servicio
-            "meses"
+            "meses",
+            // Modificación para modulo de compras
+            "monedas",
+            "tipo_pagos",
+            "plazo_pagos",
+            "paises",
+            "proveedores"
         };
         Statement stmt = c.getStatement();
         ResultSet rs;
         List<String> lista;
         // Para cada tabla listada, carga su contenido en memoria.
+        String columna;
         for (String tabla : tablas) {
             try {
-                rs = stmt.executeQuery("SELECT * from " + tabla);
+                rs = stmt.executeQuery("SELECT COLUMN_NAME "
+                        + "FROM information_schema.COLUMNS "
+                        + "WHERE TABLE_SCHEMA = 'rossisport' "
+                        + "AND TABLE_NAME = '" + tabla + "' "
+                        + "limit 1");
+                rs.next();
+                columna = rs.getString(1);
+                rs = stmt.executeQuery("SELECT " + columna
+                        + " from " + tabla
+                        + " ORDER BY " + columna);
                 lista = new ArrayList<String>();
                 while (rs.next()) {
                     lista.add(rs.getString(1));
@@ -137,8 +153,8 @@ public class ControladorCaracteristicas {
     }
 
     /**
-     * Retorna el contenido de la tabla (caracteristica) con el
-     * nombre pasado por parametro.
+     * Retorna el contenido de la tabla (caracteristica) con el nombre pasado
+     * por parametro.
      */
     public List<String> getCaracteristica(String caracteristica) {
         // Para la tabla de talles se carga el contenido de la siguiente
@@ -209,6 +225,7 @@ public class ControladorCaracteristicas {
             this.ok = false;
             return false;
         }
+        this.initCaracteristicas();
         return true;
     }
 
@@ -235,6 +252,7 @@ public class ControladorCaracteristicas {
             this.ok = false;
             return false;
         }
+        this.initCaracteristicas();
         return true;
     }
 }
