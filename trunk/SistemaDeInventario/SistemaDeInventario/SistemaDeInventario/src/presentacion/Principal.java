@@ -26,6 +26,7 @@ import logica.ControladorArticulos;
 import logica.ControladorCaracteristicas;
 import logica.ControladorCostos;
 import logica.ControladorEtiquetas;
+import logica.ControladorFacturas;
 import logica.ControladorPrecios;
 import logica.ControladorProductos;
 import logica.ControladorProveedor;
@@ -43,6 +44,7 @@ public class Principal extends javax.swing.JFrame {
     private ControladorPrecios precios;
     private ControladorCostos costos;
     private ControladorProveedor proveedores;
+    private ControladorFacturas facturas;
 
     /**
      * Creates new form Principal
@@ -59,6 +61,7 @@ public class Principal extends javax.swing.JFrame {
             this.precios = new ControladorPrecios();
             this.costos = new ControladorCostos();
             this.proveedores = new ControladorProveedor(this.caracteristicas);
+            this.facturas = new ControladorFacturas(this.articulos, this.costos);
             cargarPantallas(true);
         }
     }
@@ -495,6 +498,7 @@ public class Principal extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         jLabel82 = new javax.swing.JLabel();
         jButton6 = new javax.swing.JButton();
+        jLabel106 = new javax.swing.JLabel();
         jPanel24 = new javax.swing.JPanel();
         jLabel94 = new javax.swing.JLabel();
         jLabel95 = new javax.swing.JLabel();
@@ -1810,6 +1814,11 @@ public class Principal extends javax.swing.JFrame {
                 "Cantidad", "Producto", "Talle", "Color", "Precio", "Sub total"
             }
         ));
+        jTable3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTable3KeyTyped(evt);
+            }
+        });
         jScrollPane7.setViewportView(jTable3);
 
         jLabel33.setText("Fecha");
@@ -1836,6 +1845,8 @@ public class Principal extends javax.swing.JFrame {
 
         jLabel80.setText("Total");
 
+        jTextField36.setText("0");
+
         jButton3.setText("Agregar linea");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1846,6 +1857,11 @@ public class Principal extends javax.swing.JFrame {
         jLabel81.setText("Moneda");
 
         jButton4.setText("Ingresar factura");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jLabel82.setText("%");
 
@@ -1864,8 +1880,14 @@ public class Principal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(jPanel20Layout.createSequentialGroup()
-                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel20Layout.createSequentialGroup()
+                                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel20Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jLabel106, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
                         .addGroup(jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel77)
                             .addGroup(jPanel20Layout.createSequentialGroup()
@@ -1964,7 +1986,9 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(jLabel80)
                     .addComponent(jTextField37, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton4)
+                .addGroup(jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton4)
+                    .addComponent(jLabel106, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
 
@@ -2355,12 +2379,13 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(jTextField55, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBox14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel29)
-                    .addComponent(jTextField40, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel30)
-                    .addComponent(jComboBox21, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel85, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel85, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel29)
+                        .addComponent(jTextField40, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel30)
+                        .addComponent(jComboBox21, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel83)
@@ -2497,12 +2522,13 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(jComboBox19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(proveedor_Modificar_Cargar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel88)
-                    .addComponent(jTextField45, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel89)
-                    .addComponent(jComboBox13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel93, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel93, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel88)
+                        .addComponent(jTextField45, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel89)
+                        .addComponent(jComboBox13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel90)
@@ -3270,6 +3296,79 @@ public class Principal extends javax.swing.JFrame {
         agregarCombosALineasFactura(this.jTable3);
     }//GEN-LAST:event_jButton6ActionPerformed
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        this.jLabel106.setText("");
+
+        String prov = this.jComboBox15.getSelectedItem().toString(),
+                fac = this.jTextField38.getText(),
+                fecha = this.jTextField39.getText(),
+                mon = this.jComboBox16.getSelectedItem().toString(),
+                tipop = this.jComboBox17.getSelectedItem().toString(),
+                plazop = this.jComboBox18.getSelectedItem().toString();
+
+        // TRY????
+        int iva = Integer.parseInt(this.jTextField33.getText()),
+                desc = Integer.parseInt(this.jTextField36.getText());
+        // CATCH???
+
+        TableModel foo = this.jTable3.getModel();
+        ArrayList<String[]> lineas = new ArrayList<String[]>();
+        String cant, p, t, c, prec;
+        for (int i = 0; i < foo.getRowCount(); i++) {
+            cant = foo.getValueAt(i, 0).toString();
+            p = foo.getValueAt(i, 1).toString();
+            t = foo.getValueAt(i, 2).toString();
+            c = foo.getValueAt(i, 3).toString();
+            prec = foo.getValueAt(i, 4).toString();
+            if (!cant.equals("") && !p.equals("") && !t.equals("") && !c.equals("") && !prec.equals("")) {
+                try {
+                    Integer.parseInt(foo.getValueAt(i, 0).toString());
+                } catch (NumberFormatException nfe) {
+                    this.jLabel106.setText("La cantidad debe ser un numero.");
+                    return;
+                }
+                try {
+                    Integer.parseInt(foo.getValueAt(i, 4).toString());
+                } catch (NumberFormatException nfe) {
+                    this.jLabel106.setText("El precio debe ser un numero.");
+                    return;
+                }
+                lineas.add(new String[]{cant, p, t, c, prec});
+            } else {
+                if (!(cant.equals("") && p.equals("") && t.equals("") && c.equals("") && prec.equals(""))) {
+                    this.jLabel106.setText("La linea " + (i + 1) + " tiene campos en blanco.");
+                    return;
+                }
+            }
+        }
+        boolean res = this.facturas.crear(prov, fac, fecha, mon, tipop, plazop, iva, desc, lineas);
+        if (res) {
+            this.jLabel106.setText("Factura ingresada correctamente.");
+        } else {
+            this.jLabel106.setText("Ocurrió un problema al ingresar la factura.");
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jTable3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable3KeyTyped
+        TableModel foo = this.jTable3.getModel();
+        int cant, prec;
+        int subtotal = 0;
+        for (int i = 0; i < foo.getRowCount(); i++) {
+            try {
+                cant = Integer.parseInt(foo.getValueAt(i, 0).toString());
+                prec = Integer.parseInt(foo.getValueAt(i, 4).toString());
+                subtotal += cant * prec;
+                foo.setValueAt(cant * prec, i, 5);
+            } catch (NumberFormatException nfe) {
+            }
+        }
+        this.jTextField34.setText("" + subtotal);
+        int iva = Integer.parseInt(this.jTextField33.getText());
+        int desc = Integer.parseInt(this.jTextField36.getText());
+        this.jTextField35.setText("" + (subtotal * iva) / 100);
+        this.jTextField37.setText("" + (subtotal + ((subtotal * iva) / 100) - desc));
+    }//GEN-LAST:event_jTable3KeyTyped
+
     /**
      * @param args the command line arguments
      */
@@ -3382,6 +3481,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel103;
     private javax.swing.JLabel jLabel104;
     private javax.swing.JLabel jLabel105;
+    private javax.swing.JLabel jLabel106;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;

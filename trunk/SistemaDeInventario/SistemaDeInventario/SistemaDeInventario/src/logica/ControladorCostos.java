@@ -63,4 +63,26 @@ public class ControladorCostos {
         }
         return true;
     }
+    
+    public boolean modificar(String codigo, String talle, String costoCompra) {
+        Statement stmt = this.c.getStatement();
+        String update = "UPDATE costos "
+                + "SET costo_compra='" + costoCompra + "'"
+                + " WHERE codigo='" + codigo + "' AND talle='" + talle + "'";
+        try {
+            String select = "SELECT * FROM costos "
+                    + " WHERE codigo = '" + codigo + "' AND talle = '" + talle + "'";
+            ResultSet rs = stmt.executeQuery(select);
+            rs.last();
+            if (rs.getRow() == 0) {
+                update = "INSERT INTO costos (codigo, talle, costo_compra) VALUES "
+                        + "('" + codigo + "', '" + talle + "', '" + costoCompra + "')";
+            }
+            stmt.executeUpdate(update);
+        } catch (SQLException ex) {
+            JOptionPane.showConfirmDialog(null, "Ocurrió un problema al modificar los costos.", "Error!", JOptionPane.CLOSED_OPTION, JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        return true;
+    }
 }
