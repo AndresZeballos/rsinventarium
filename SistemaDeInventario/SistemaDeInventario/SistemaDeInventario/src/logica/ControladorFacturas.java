@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Properties;
 import javax.swing.JOptionPane;
 import sistemadeinventario.ConectionH;
@@ -32,13 +33,13 @@ public class ControladorFacturas {
     /**
      *
      */
-    public boolean crear(String prov, String fac, String fecha, String mon, String tipop, String plazop, int iva, int desc, ArrayList<String[]> lineas) {
+    public boolean crear(String prov, String fac, String fecha, String mon, String tipop, String plazop, int iva, int desc, int total_s_iva, ArrayList<String[]> lineas) {
         String local = getLocal();
         Statement stmt = this.c.getStatement();
         String insert =
                 "INSERT INTO facturas "
-                + "(proveedor, factura, fecha, moneda, tipopago, plazopago, iva, descuentos) "
-                + "VALUES ('" + prov + "', '" + fac + "', STR_TO_DATE(REPLACE('" + fecha + "','/','.') ,GET_FORMAT(date,'EUR')), '" + mon + "', '" + tipop + "', '" + plazop + "', '" + iva + "', '" + desc + "')";
+                + "(proveedor, factura, fecha, moneda, tipopago, plazopago, iva, descuentos, total_s_iva) "
+                + "VALUES ('" + prov + "', '" + fac + "', STR_TO_DATE(REPLACE('" + fecha + "','/','.') ,GET_FORMAT(date,'EUR')), '" + mon + "', '" + tipop + "', '" + plazop + "', '" + iva + "', '" + desc + "', '" + total_s_iva + "')";
         int clave;
         try {
             stmt.executeUpdate(insert, Statement.RETURN_GENERATED_KEYS);
@@ -73,4 +74,70 @@ public class ControladorFacturas {
         }
         return local;
     }
+
+    public ArrayList<String[]> cargarFacturas(String prov) {
+        ArrayList<String[]> lineas = new ArrayList<String[]>();
+        Statement stmt = c.getStatement();
+        ResultSet rs;
+        try {
+            rs = stmt.executeQuery("SELECT numero, fecha, factura, total_s_iva from facturas where proveedor = '" + prov + "'");
+            while (rs.next()) {
+                String numero = rs.getString(1);
+                String fecha = rs.getDate(2).toString();
+                String factura = rs.getString(3);
+                String total = "" + rs.getInt(4);
+                lineas.add(new String[]{numero, fecha, factura, total});
+            }
+        } catch (SQLException e) {
+            JOptionPane.showConfirmDialog(null, "Ocurrió un problema", "Error al recuperar las facturas.", JOptionPane.CLOSED_OPTION, JOptionPane.WARNING_MESSAGE);
+            return new ArrayList<String[]>();
+        }
+        return lineas;
+    }
+
+    public String[] cargarFactura(int nfactura) {
+        String[] datos = new String[]{"", "", "", "", "", "", "", "", ""};
+        Statement stmt = c.getStatement();
+        ResultSet rs;
+        try {
+            rs = stmt.executeQuery("SELECT * from facturas where numero = '" + nfactura + "'");
+            while (rs.next()) {
+                String prov = rs.getString("proveedor");
+                String factura = rs.getString("factura");
+                Date dia = rs.getDate("fecha");
+                String fecha = dia.getDate() + "/" + (dia.getMonth() + 1) + "/" + (dia.getYear() + 1900);
+                String mon = rs.getString("moneda");
+                String tpago = rs.getString("tipopago");
+                String tplazo = rs.getString("plazopago");
+                String iva = "" + rs.getInt("iva");
+                String desc = "" + rs.getInt("descuentos");
+                String total = "" + rs.getInt("total_s_iva");
+                datos = new String[]{prov, factura, fecha, mon, tpago, tplazo, iva, desc, total};
+            }
+        } catch (SQLException e) {
+            JOptionPane.showConfirmDialog(null, "Ocurrió un problema", "Error al recuperar la factura.", JOptionPane.CLOSED_OPTION, JOptionPane.WARNING_MESSAGE);
+        }
+        return datos;
+    }
+    
+    public ArrayList<String[]> cargarFacturaLineas(int nfactura) {
+        ArrayList<String[]> lineas = new ArrayList<String[]>();
+        Statement stmt = c.getStatement();
+        ResultSet rs;
+        try {
+            rs = stmt.executeQuery("SELECT cantidad, codigo, talle, color, precio from linea_factura where factura = '" + nfactura + "' ORDER BY linea");
+            while (rs.next()) {
+                String cantidad = rs.getString("cantidad");
+                String codigo = rs.getString("codigo");
+                String talle = rs.getString("talle");
+                String color = rs.getString("color");
+                String precio = rs.getString("precio");
+                lineas.add(new String[]{cantidad, codigo, talle, color, precio});
+            }
+        } catch (SQLException e) {
+            JOptionPane.showConfirmDialog(null, "Ocurrió un problema", "Error al recuperar las lineas de la factura.", JOptionPane.CLOSED_OPTION, JOptionPane.WARNING_MESSAGE);
+        }
+        return lineas;
+    }
+    
 }
