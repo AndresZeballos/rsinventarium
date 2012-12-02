@@ -306,6 +306,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
     public void calcularTotales() {
+        this.jLabel106.setText("");
         TableModel foo = this.jTable3.getModel();
         int cant, prec;
         int subtotal = 0;
@@ -319,8 +320,14 @@ public class Principal extends javax.swing.JFrame {
             }
         }
         this.jTextField34.setText("" + subtotal);
-        int iva = Integer.parseInt(this.jTextField33.getText());
-        int desc = Integer.parseInt(this.jTextField36.getText());
+        int iva, desc;
+        try {
+            iva = Integer.parseInt(this.jTextField33.getText());
+            desc = Integer.parseInt(this.jTextField36.getText());
+        } catch (NumberFormatException nfe) {
+            this.jLabel106.setText("El iva y descuento deben ser numericos.");
+            return;
+        }
         this.jTextField35.setText("" + (subtotal * iva) / 100);
         this.jTextField37.setText("" + (subtotal + ((subtotal * iva) / 100) - desc));
     }
@@ -1847,8 +1854,8 @@ public class Principal extends javax.swing.JFrame {
             }
         ));
         jTable3.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                jTable3KeyTyped(evt);
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTable3KeyReleased(evt);
             }
         });
         jScrollPane7.setViewportView(jTable3);
@@ -1873,8 +1880,8 @@ public class Principal extends javax.swing.JFrame {
 
         jTextField33.setText("22");
         jTextField33.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                jTextField33KeyTyped(evt);
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField33KeyReleased(evt);
             }
         });
 
@@ -1884,8 +1891,8 @@ public class Principal extends javax.swing.JFrame {
 
         jTextField36.setText("0");
         jTextField36.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                jTextField36KeyTyped(evt);
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField36KeyReleased(evt);
             }
         });
 
@@ -1928,7 +1935,7 @@ public class Principal extends javax.swing.JFrame {
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel20Layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(jLabel106, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jLabel106, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel77)
@@ -2511,7 +2518,7 @@ public class Principal extends javax.swing.JFrame {
                     .addGroup(jPanel27Layout.createSequentialGroup()
                         .addComponent(jButton5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel92, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel92, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(proveedor_Modificar_Modificar, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel27Layout.createSequentialGroup()
@@ -3031,7 +3038,6 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBox29ItemStateChanged
 
     private void EliminarProducto_EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarProducto_EliminarActionPerformed
-        // TODO add your handling code here:
         String codigo = this.jTextField10.getText();
         if (!this.caracteristicas.existeElementoCaracteristica(codigo, "descripciones")) {
             this.jLabel49.setText("Esta ingresando un codigo incorrecto");
@@ -3284,6 +3290,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_proveedor_Consulta_CargarActionPerformed
 
     private void proveedor_Alta_CrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_proveedor_Alta_CrearActionPerformed
+        this.jLabel26.setText("");
         String nombre = this.jTextField26.getText();
         if (nombre.equals("")) {
             this.jLabel26.setText("Debe ingresar el nombre del proveedor.");
@@ -3317,6 +3324,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_proveedor_Alta_CrearActionPerformed
 
     private void proveedor_Modificar_CargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_proveedor_Modificar_CargarActionPerformed
+        this.jLabel92.setText("");
         this.jLabel93.setText("");
         String nombre = this.jComboBox19.getSelectedItem().toString();
         if (nombre.equals("")) {
@@ -3330,20 +3338,24 @@ public class Principal extends javax.swing.JFrame {
         TableModel a = this.jTable2.getModel();
         DefaultTableModel b = agregarLinea(a);
         this.jTable2.setModel(b);
+        this.jLabel26.setText("");
     }//GEN-LAST:event_proveedores_Alta_AgregarActionPerformed
 
     private void proveedores_Modificar_AgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_proveedores_Modificar_AgregarActionPerformed
         TableModel a = this.jTable6.getModel();
         DefaultTableModel b = agregarLinea(a);
         this.jTable6.setModel(b);
+        this.jLabel92.setText("");
     }//GEN-LAST:event_proveedores_Modificar_AgregarActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         borrarContactos(this.jTable2);
+        this.jLabel26.setText("");
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         borrarContactos(this.jTable6);
+        this.jLabel92.setText("");
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
@@ -3358,18 +3370,17 @@ public class Principal extends javax.swing.JFrame {
                     "Cantidad", "Producto", "Talle", "Color", "Precio", "Sub total"
                 }));
         agregarCombosALineasFactura(this.jTable3);
+        this.jLabel106.setText("");
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         this.jLabel106.setText("");
-
         String prov = this.jComboBox15.getSelectedItem().toString(),
                 fac = this.jTextField38.getText(),
                 fecha = this.jTextField39.getText(),
                 mon = this.jComboBox16.getSelectedItem().toString(),
                 tipop = this.jComboBox17.getSelectedItem().toString(),
                 plazop = this.jComboBox18.getSelectedItem().toString();
-
         if (prov.equals("")) {
             this.jLabel106.setText("Debe ingresar el proveedor");
             return;
@@ -3378,12 +3389,15 @@ public class Principal extends javax.swing.JFrame {
             this.jLabel106.setText("Debe ingresar la fecha");
             return;
         }
-        // TRY????
-        int iva = Integer.parseInt(this.jTextField33.getText()),
-                desc = Integer.parseInt(this.jTextField36.getText()),
-                total_s_iva = Integer.parseInt(this.jTextField37.getText()) - Integer.parseInt(this.jTextField35.getText());
-        // CATCH???
-
+        int iva, desc, total_s_iva;
+        try {
+            iva = Integer.parseInt(this.jTextField33.getText());
+            desc = Integer.parseInt(this.jTextField36.getText());
+            total_s_iva = Integer.parseInt(this.jTextField37.getText()) - Integer.parseInt(this.jTextField35.getText());
+        } catch (NumberFormatException nfe) {
+            this.jLabel106.setText("El iva y descuento deben ser numericos.");
+            return;
+        }
         TableModel foo = this.jTable3.getModel();
         ArrayList<String[]> lineas = new ArrayList<String[]>();
         String cant, p, t, c, prec;
@@ -3422,10 +3436,6 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void jTable3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable3KeyTyped
-        calcularTotales();
-    }//GEN-LAST:event_jTable3KeyTyped
-
     private void jComboBox20ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox20ItemStateChanged
         if (ItemEvent.DESELECTED == evt.getStateChange()) {
             return;
@@ -3436,11 +3446,11 @@ public class Principal extends javax.swing.JFrame {
         for (int i = 0; i < facturas.size(); i++) {
             lineas[i] = facturas.get(i);
         }
-        DefaultTableModel modelo = new DefaultTableModel(lineas, new String[]{"Numero", "Fecha", "Nro factura", "Total S/IVA"});
+        DefaultTableModel modelo = new DefaultTableModel(lineas, new String[]{"#", "Fecha", "Nro factura", "Total S/IVA"});
         this.jTable7.setModel(modelo);
-
+        
         TableColumn column = this.jTable7.getColumnModel().getColumn(0);
-        column.setPreferredWidth(1);
+        column.setMaxWidth(25);
     }//GEN-LAST:event_jComboBox20ItemStateChanged
 
     private void proveedor_Facturas_verFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_proveedor_Facturas_verFacturaActionPerformed
@@ -3478,13 +3488,17 @@ public class Principal extends javax.swing.JFrame {
 
     }//GEN-LAST:event_proveedor_Facturas_verFacturaActionPerformed
 
-    private void jTextField33KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField33KeyTyped
+    private void jTextField36KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField36KeyReleased
         calcularTotales();
-    }//GEN-LAST:event_jTextField33KeyTyped
+    }//GEN-LAST:event_jTextField36KeyReleased
 
-    private void jTextField36KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField36KeyTyped
+    private void jTextField33KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField33KeyReleased
         calcularTotales();
-    }//GEN-LAST:event_jTextField36KeyTyped
+    }//GEN-LAST:event_jTextField33KeyReleased
+
+    private void jTable3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable3KeyReleased
+        calcularTotales();
+    }//GEN-LAST:event_jTable3KeyReleased
 
     /**
      * @param args the command line arguments

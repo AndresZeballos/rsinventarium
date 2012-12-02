@@ -80,10 +80,11 @@ public class ControladorFacturas {
         Statement stmt = c.getStatement();
         ResultSet rs;
         try {
-            rs = stmt.executeQuery("SELECT numero, fecha, factura, total_s_iva from facturas where proveedor = '" + prov + "'");
+            rs = stmt.executeQuery("SELECT numero, fecha, factura, total_s_iva FROM facturas WHERE proveedor = '" + prov + "' ORDER BY fecha DESC");
             while (rs.next()) {
                 String numero = rs.getString(1);
-                String fecha = rs.getDate(2).toString();
+                Date dia = rs.getDate(2);
+                String fecha = dia.getDate() + "/" + (dia.getMonth() + 1) + "/" + (dia.getYear() + 1900);
                 String factura = rs.getString(3);
                 String total = "" + rs.getInt(4);
                 lineas.add(new String[]{numero, fecha, factura, total});
