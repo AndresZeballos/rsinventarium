@@ -4,10 +4,15 @@
  */
 package presentacion;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.event.ItemEvent;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
@@ -18,6 +23,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListModel;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
@@ -45,6 +51,7 @@ public class Principal extends javax.swing.JFrame {
     private ControladorCostos costos;
     private ControladorProveedor proveedores;
     private ControladorFacturas facturas;
+    private int columna_orden;
 
     /**
      * Creates new form Principal
@@ -64,6 +71,7 @@ public class Principal extends javax.swing.JFrame {
             this.facturas = new ControladorFacturas(this.articulos, this.costos);
             cargarPantallas(true);
         }
+        this.columna_orden = 0;
     }
 
     /**
@@ -145,6 +153,10 @@ public class Principal extends javax.swing.JFrame {
 
 
         agregarCombosALineasFactura(this.jTable3);
+
+        Date hoy = new Date();
+        String fecha = hoy.getDate() + "/" + (hoy.getMonth() + 1) + "/" + (hoy.getYear() + 1900);
+        this.jTextField39.setText(fecha);
     }
 
     /**
@@ -291,6 +303,26 @@ public class Principal extends javax.swing.JFrame {
                     "Nombre", "Telefono", "Correo"
                 });
         cont.setModel(modelo);
+    }
+
+    public void calcularTotales() {
+        TableModel foo = this.jTable3.getModel();
+        int cant, prec;
+        int subtotal = 0;
+        for (int i = 0; i < foo.getRowCount(); i++) {
+            try {
+                cant = Integer.parseInt(foo.getValueAt(i, 0).toString());
+                prec = Integer.parseInt(foo.getValueAt(i, 4).toString());
+                subtotal += cant * prec;
+                foo.setValueAt(cant * prec, i, 5);
+            } catch (NumberFormatException nfe) {
+            }
+        }
+        this.jTextField34.setText("" + subtotal);
+        int iva = Integer.parseInt(this.jTextField33.getText());
+        int desc = Integer.parseInt(this.jTextField36.getText());
+        this.jTextField35.setText("" + (subtotal * iva) / 100);
+        this.jTextField37.setText("" + (subtotal + ((subtotal * iva) / 100) - desc));
     }
 
     /**
@@ -1840,12 +1872,22 @@ public class Principal extends javax.swing.JFrame {
         jLabel78.setText("Iva");
 
         jTextField33.setText("22");
+        jTextField33.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField33KeyTyped(evt);
+            }
+        });
 
         jLabel79.setText("Descuento");
 
         jLabel80.setText("Total");
 
         jTextField36.setText("0");
+        jTextField36.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField36KeyTyped(evt);
+            }
+        });
 
         jButton3.setText("Agregar linea");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -2030,14 +2072,6 @@ public class Principal extends javax.swing.JFrame {
         jLabel103.setText("Moneda");
 
         jLabel104.setText("%");
-
-        jTextField31.setText("jTextField31");
-
-        jTextField32.setText("jTextField32");
-
-        jTextField42.setText("jTextField42");
-
-        jTextField43.setText("jTextField43");
 
         javax.swing.GroupLayout jPanel24Layout = new javax.swing.GroupLayout(jPanel24);
         jPanel24.setLayout(jPanel24Layout);
@@ -2551,6 +2585,11 @@ public class Principal extends javax.swing.JFrame {
         jLabel105.setText("Nombre");
 
         jComboBox20.setModel(new javax.swing.DefaultComboBoxModel(new String[] { }));
+        jComboBox20.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBox20ItemStateChanged(evt);
+            }
+        });
 
         jTable7.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -2560,7 +2599,7 @@ public class Principal extends javax.swing.JFrame {
                 {null, null, null}
             },
             new String [] {
-                "Fecha", "Nro factura", "Total s/IVA"
+                "Fecha", "Nro factura", "Total S/IVA"
             }
         ) {
             Class[] types = new Class [] {
@@ -2581,6 +2620,11 @@ public class Principal extends javax.swing.JFrame {
         jScrollPane11.setViewportView(jTable7);
 
         proveedor_Facturas_verFactura.setText("Ver factura");
+        proveedor_Facturas_verFactura.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                proveedor_Facturas_verFacturaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel28Layout = new javax.swing.GroupLayout(jPanel28);
         jPanel28.setLayout(jPanel28Layout);
@@ -2713,8 +2757,28 @@ public class Principal extends javax.swing.JFrame {
             TableColumn column = this.jTable1.getColumnModel().getColumn(i);
             column.setPreferredWidth(100);
         }
-        this.jTable1.getColumnModel().getColumn(4).setPreferredWidth(125);
-        this.jTable1.getColumnModel().getColumn(1).setPreferredWidth(423);
+        this.jTable1.getColumnModel().getColumn(1).setPreferredWidth(400);
+
+        // Modificacion para que aparesca una linea negra entre cuando
+        // se cambia a otro producto en la tabla de la consulta de stock
+        this.jTable1.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                JTextField foo = new JTextField(value.toString());
+                int rows = table.getRowCount();
+                if (row < rows - 1) {
+                    String sig = table.getValueAt(row + 1, columna_orden).toString();
+                    String valor = table.getValueAt(row, columna_orden).toString();
+                    if (!sig.equals(valor)) {
+                        foo.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.black));
+                    } else {
+                        foo.setBorder(BorderFactory.createEmptyBorder());
+                    }
+                } else {
+                    foo.setBorder(BorderFactory.createEmptyBorder());
+                }
+                return foo;
+            }
+        });
     }//GEN-LAST:event_ConsultarStock_ConsultarActionPerformed
 
     private void IngresarArticulos_IngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IngresarArticulos_IngresarActionPerformed
@@ -3306,9 +3370,18 @@ public class Principal extends javax.swing.JFrame {
                 tipop = this.jComboBox17.getSelectedItem().toString(),
                 plazop = this.jComboBox18.getSelectedItem().toString();
 
+        if (prov.equals("")) {
+            this.jLabel106.setText("Debe ingresar el proveedor");
+            return;
+        }
+        if (fecha.equals("")) {
+            this.jLabel106.setText("Debe ingresar la fecha");
+            return;
+        }
         // TRY????
         int iva = Integer.parseInt(this.jTextField33.getText()),
-                desc = Integer.parseInt(this.jTextField36.getText());
+                desc = Integer.parseInt(this.jTextField36.getText()),
+                total_s_iva = Integer.parseInt(this.jTextField37.getText()) - Integer.parseInt(this.jTextField35.getText());
         // CATCH???
 
         TableModel foo = this.jTable3.getModel();
@@ -3341,7 +3414,7 @@ public class Principal extends javax.swing.JFrame {
                 }
             }
         }
-        boolean res = this.facturas.crear(prov, fac, fecha, mon, tipop, plazop, iva, desc, lineas);
+        boolean res = this.facturas.crear(prov, fac, fecha, mon, tipop, plazop, iva, desc, total_s_iva, lineas);
         if (res) {
             this.jLabel106.setText("Factura ingresada correctamente.");
         } else {
@@ -3350,24 +3423,68 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jTable3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable3KeyTyped
-        TableModel foo = this.jTable3.getModel();
-        int cant, prec;
-        int subtotal = 0;
-        for (int i = 0; i < foo.getRowCount(); i++) {
-            try {
-                cant = Integer.parseInt(foo.getValueAt(i, 0).toString());
-                prec = Integer.parseInt(foo.getValueAt(i, 4).toString());
-                subtotal += cant * prec;
-                foo.setValueAt(cant * prec, i, 5);
-            } catch (NumberFormatException nfe) {
-            }
-        }
-        this.jTextField34.setText("" + subtotal);
-        int iva = Integer.parseInt(this.jTextField33.getText());
-        int desc = Integer.parseInt(this.jTextField36.getText());
-        this.jTextField35.setText("" + (subtotal * iva) / 100);
-        this.jTextField37.setText("" + (subtotal + ((subtotal * iva) / 100) - desc));
+        calcularTotales();
     }//GEN-LAST:event_jTable3KeyTyped
+
+    private void jComboBox20ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox20ItemStateChanged
+        if (ItemEvent.DESELECTED == evt.getStateChange()) {
+            return;
+        }
+        String prov = this.jComboBox20.getSelectedItem().toString();
+        ArrayList<String[]> facturas = this.facturas.cargarFacturas(prov);
+        String[][] lineas = new String[facturas.size()][this.jTable7.getModel().getColumnCount()];
+        for (int i = 0; i < facturas.size(); i++) {
+            lineas[i] = facturas.get(i);
+        }
+        DefaultTableModel modelo = new DefaultTableModel(lineas, new String[]{"Numero", "Fecha", "Nro factura", "Total S/IVA"});
+        this.jTable7.setModel(modelo);
+
+        TableColumn column = this.jTable7.getColumnModel().getColumn(0);
+        column.setPreferredWidth(1);
+    }//GEN-LAST:event_jComboBox20ItemStateChanged
+
+    private void proveedor_Facturas_verFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_proveedor_Facturas_verFacturaActionPerformed
+        int fila = this.jTable7.getSelectedRow();
+        int nfactura = Integer.parseInt(this.jTable7.getModel().getValueAt(fila, 0).toString());
+
+        String[] datos = this.facturas.cargarFactura(nfactura);
+        this.jTextField31.setText(datos[0]);
+        this.jTextField52.setText(datos[1]);
+        this.jTextField53.setText(datos[2]);
+        this.jTextField32.setText(datos[3]);
+        this.jTextField42.setText(datos[4]);
+        this.jTextField43.setText(datos[5]);
+        this.jTextField47.setText(datos[6]);
+        this.jTextField50.setText(datos[7]);
+
+        ArrayList<String[]> prods = this.facturas.cargarFacturaLineas(nfactura);
+        String[][] lineas = new String[prods.size()][6];
+        int subtotal = 0;
+        for (int i = 0; i < prods.size(); i++) {
+            System.arraycopy(prods.get(i), 0, lineas[i], 0, 5);
+            lineas[i][5] = "" + (Integer.parseInt(lineas[i][0]) * Integer.parseInt(lineas[i][4]));
+            subtotal += Integer.parseInt(lineas[i][5]);
+        }
+        DefaultTableModel modelo = new DefaultTableModel(lineas, new String[]{"Cantidad", "Producto", "Talle", "Color", "Precio", "Sub total"});
+        this.jTable5.setModel(modelo);
+
+        this.jTextField48.setText("" + subtotal);
+        this.jTextField49.setText("" + (subtotal * Integer.parseInt(datos[6])) / 100);
+        this.jTextField51.setText("" + (subtotal + (subtotal * Integer.parseInt(datos[6])) / 100 - Integer.parseInt(datos[7])));
+
+        this.jTabbedPane3.setSelectedIndex(1);
+        this.jTabbedPane1.setSelectedIndex(8);
+
+
+    }//GEN-LAST:event_proveedor_Facturas_verFacturaActionPerformed
+
+    private void jTextField33KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField33KeyTyped
+        calcularTotales();
+    }//GEN-LAST:event_jTextField33KeyTyped
+
+    private void jTextField36KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField36KeyTyped
+        calcularTotales();
+    }//GEN-LAST:event_jTextField36KeyTyped
 
     /**
      * @param args the command line arguments

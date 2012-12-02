@@ -102,6 +102,7 @@ public class ControladorCaracteristicas {
         String columna;
         for (String tabla : tablas) {
             try {
+                /*
                 rs = stmt.executeQuery("SELECT COLUMN_NAME "
                         + "FROM information_schema.COLUMNS "
                         + "WHERE TABLE_SCHEMA = 'rossisport' "
@@ -112,6 +113,8 @@ public class ControladorCaracteristicas {
                 rs = stmt.executeQuery("SELECT " + columna
                         + " from " + tabla
                         + " ORDER BY " + columna);
+                */
+                rs = stmt.executeQuery("SELECT * from " + tabla);
                 lista = new ArrayList<String>();
                 while (rs.next()) {
                     lista.add(rs.getString(1));
