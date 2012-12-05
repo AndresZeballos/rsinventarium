@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
+import javax.swing.JOptionPane;
 import sistemadeinventario.ConectionH;
 
 /**
@@ -32,15 +33,13 @@ public class ControladorCaracteristicas {
     private Hashtable<String, List> caracteristicas;
     // Campos utilizado para informar errores de conectividad y otros errores
     private boolean ok;
-    private String msg;
     private ConectionH c;
 
     public ControladorCaracteristicas() {
         this.ok = true;
-        this.msg = "";
         this.c = new ConectionH();
         if (!this.c.getOk()) {
-            this.msg = "Problema de conectividad!";
+            JOptionPane.showConfirmDialog(null, "Problema de conectividad!", "Error!", JOptionPane.CLOSED_OPTION, JOptionPane.ERROR_MESSAGE);
             this.ok = false;
             return;
         }
@@ -121,7 +120,8 @@ public class ControladorCaracteristicas {
                 }
                 this.caracteristicas.put(tabla, lista);
             } catch (SQLException e) {
-                this.msg = "Problema SQLException al iniciar las caracteristicas!";
+                JOptionPane.showConfirmDialog(null, "SQLException al iniciar las caracteristicas!\nOcurrencia de: " + tabla, "Error!", JOptionPane.CLOSED_OPTION, JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showConfirmDialog(null, e.toString(), "Error!", JOptionPane.CLOSED_OPTION, JOptionPane.ERROR_MESSAGE);
                 this.ok = false;
                 return;
             }
@@ -142,17 +142,13 @@ public class ControladorCaracteristicas {
         if (!this.existeElementoCaracteristica(fecha, "meses")) {
             // De no existir, termina la inicialización en error
             this.ok = false;
-            this.msg = "La aplicación necesita mantenimiento!!!";
+            JOptionPane.showConfirmDialog(null, "No se ha cumplido con el calendario de pagos.", "Excepción", JOptionPane.CLOSED_OPTION, JOptionPane.ERROR_MESSAGE);
             this.caracteristicas = new Hashtable<String, List>();
         }
     }
 
     public boolean getOk() {
         return this.ok;
-    }
-
-    public String getMsg() {
-        return this.msg;
     }
 
     /**
@@ -224,8 +220,7 @@ public class ControladorCaracteristicas {
         try {
             stmt.executeUpdate("INSERT INTO " + tabla + " VALUES ('" + elemento + "')");
         } catch (SQLException e) {
-            this.msg = "Problema de inserción!\nNo esta permitida esta operación";
-            this.ok = false;
+            JOptionPane.showConfirmDialog(null, "Problema de inserción!\nNo esta permitida esta operación", "Error!!!", JOptionPane.CLOSED_OPTION, JOptionPane.ERROR_MESSAGE);
             return false;
         }
         this.initCaracteristicas();
@@ -242,7 +237,7 @@ public class ControladorCaracteristicas {
          * terminando en "e", también se quita la "e". 
          */
         // Se procesa el nombre de la columna en base a la convención.
-        String columna = tabla.substring(0, tabla.length() - 1);
+        String columna = tabla.substring(0, tabla.length() - 1).replaceAll("_", "");
         if (columna.charAt(columna.length() - 1) == 'e') {
             columna = columna.substring(0, columna.length() - 1);
         }
@@ -251,8 +246,7 @@ public class ControladorCaracteristicas {
         try {
             stmt.executeUpdate("DELETE FROM " + tabla + " WHERE " + columna + " = '" + elemento + "'");
         } catch (SQLException e) {
-            this.msg = "Problema de eliminación!\nNo esta permitida esta operación";
-            this.ok = false;
+            JOptionPane.showConfirmDialog(null, "Problema de eliminación!\nNo esta permitida esta operación", "Error!!!", JOptionPane.CLOSED_OPTION, JOptionPane.ERROR_MESSAGE);
             return false;
         }
         this.initCaracteristicas();
