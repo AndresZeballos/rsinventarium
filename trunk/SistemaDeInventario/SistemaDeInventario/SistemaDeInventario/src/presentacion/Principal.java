@@ -60,7 +60,6 @@ public class Principal extends javax.swing.JFrame {
         initComponents();
         this.caracteristicas = new ControladorCaracteristicas();
         if (!this.caracteristicas.getOk()) {
-            JOptionPane.showConfirmDialog(null, this.caracteristicas.getMsg() + "\nLa aplicación no puede continuar.", "Error Fatal!!!", JOptionPane.CLOSED_OPTION, JOptionPane.ERROR_MESSAGE);
             this.dispose();
         } else {
             this.articulos = new ControladorArticulos(this.caracteristicas);
@@ -78,7 +77,7 @@ public class Principal extends javax.swing.JFrame {
      * Retorna el resultado de la inicialización.
      */
     public boolean getOk() {
-        return this.caracteristicas.getOk() && this.caracteristicas.getMsg().equals("");
+        return this.caracteristicas.getOk();
     }
 
     /**
@@ -122,7 +121,7 @@ public class Principal extends javax.swing.JFrame {
         // Modificaciones para AB generico
 
         // Colores es el primer elemento del combo 38
-        cargarCombo(this.jComboBox38.getSelectedItem().toString().toLowerCase(), this.jComboBox39);
+        cargarCombo(this.jComboBox38.getSelectedItem().toString().toLowerCase().replaceAll(" ", "_"), this.jComboBox39);
 
         // Modificaciones para el Ver de producto
 
@@ -2600,20 +2599,20 @@ public class Principal extends javax.swing.JFrame {
 
         jTable7.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Fecha", "Nro factura", "Total S/IVA"
+                "#", "Fecha", "Nro factura", "Total S/IVA"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -3133,9 +3132,7 @@ public class Principal extends javax.swing.JFrame {
         }
 
         boolean res = this.caracteristicas.crear(tabla, elemento);
-        if (!res) {
-            JOptionPane.showConfirmDialog(null, this.caracteristicas.getMsg(), "Error!!!", JOptionPane.CLOSED_OPTION, JOptionPane.ERROR_MESSAGE);
-        } else {
+        if (res) {
             cargarPantallas(false);
         }
     }//GEN-LAST:event_AltasBajas_CrearActionPerformed
@@ -3157,7 +3154,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBox38ItemStateChanged
 
     private void AltasBajas_EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AltasBajas_EliminarActionPerformed
-        String tabla = this.jComboBox38.getSelectedItem().toString();
+        String tabla = this.jComboBox38.getSelectedItem().toString().toLowerCase();
         String elemento = this.jComboBox39.getSelectedItem().toString();
 
         // Modificación para modulo de compras
@@ -3166,9 +3163,7 @@ public class Principal extends javax.swing.JFrame {
         }
 
         boolean res = this.caracteristicas.eliminar(tabla, elemento);
-        if (!res) {
-            JOptionPane.showConfirmDialog(null, this.caracteristicas.getMsg(), "Error!!!", JOptionPane.CLOSED_OPTION, JOptionPane.ERROR_MESSAGE);
-        } else {
+        if (res) {
             cargarPantallas(false);
         }
     }//GEN-LAST:event_AltasBajas_EliminarActionPerformed
