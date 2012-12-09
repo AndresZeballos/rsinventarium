@@ -2775,7 +2775,7 @@ public class Principal extends javax.swing.JFrame {
                     String sig = table.getValueAt(row + 1, columna_orden).toString();
                     String valor = table.getValueAt(row, columna_orden).toString();
                     if (!sig.equals(valor)) {
-                        foo.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.black));
+                        foo.setBorder(BorderFactory.createMatteBorder(0, 0, 3, 0, Color.red));
                     } else {
                         foo.setBorder(BorderFactory.createEmptyBorder());
                     }
