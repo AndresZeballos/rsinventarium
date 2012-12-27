@@ -167,6 +167,7 @@ public class ControladorCaracteristicas {
             l.add("3XL");
             l.add("4XL");
             l.add("5XL");
+            l.add("6XL");
             l.add("");
             l.add("14");
             l.add("16");

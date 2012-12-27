@@ -42,6 +42,7 @@ public class ControladorFacturas {
                 + "VALUES ('" + prov + "', '" + fac + "', STR_TO_DATE(REPLACE('" + fecha + "','/','.') ,GET_FORMAT(date,'EUR')), '" + mon + "', '" + tipop + "', '" + plazop + "', '" + iva + "', '" + desc + "', '" + total_s_iva + "')";
         int clave;
         try {
+            //stmt.executeUpdate("set autocommit = 0");
             stmt.executeUpdate(insert, Statement.RETURN_GENERATED_KEYS);
             ResultSet rs = stmt.getGeneratedKeys();
             rs.next();
@@ -56,6 +57,7 @@ public class ControladorFacturas {
                 this.costos.modificar(linea[1], linea[2], linea[4]);
                 i++;
             }
+            //stmt.executeUpdate("commit");
         } catch (SQLException ex) {
             JOptionPane.showConfirmDialog(null, "Ocurrió un problema al crear la factura.", "Error!", JOptionPane.CLOSED_OPTION, JOptionPane.ERROR_MESSAGE);
             return false;
